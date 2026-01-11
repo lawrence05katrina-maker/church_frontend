@@ -226,20 +226,57 @@ export const HomePage: React.FC = () => {
             justify-content: center;
             flex-wrap: wrap;
             gap: 0.5rem;
+            max-width: 100%;
+            padding: 0 1rem;
           }
           
           .hero-buttons > * {
-            flex: 1;
-            min-width: 90px;
-            max-width: 120px;
-            padding: 0.5rem 0.75rem;
-            font-size: 0.75rem;
+            flex: 1 1 auto;
+            min-width: 100px;
+            max-width: none;
+            padding: 0.75rem 1rem;
+            font-size: 0.8rem;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          
+          .hero-buttons > *.tamil {
+            font-size: 0.7rem;
+            padding: 0.75rem 0.5rem;
+            min-width: 110px;
           }
           
           .hero-buttons > * .mr-2 {
             margin-right: 0.25rem;
             width: 0.875rem;
             height: 0.875rem;
+          }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 480px) {
+          .hero-buttons {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.75rem;
+            max-width: 280px;
+            margin: 0 auto;
+          }
+          
+          .hero-buttons > * {
+            flex: none;
+            width: 100%;
+            max-width: none;
+            min-width: auto;
+            padding: 0.875rem 1rem;
+            font-size: 0.875rem;
+          }
+          
+          .hero-buttons > *.tamil {
+            font-size: 0.8rem;
+            padding: 0.875rem 1rem;
           }
         }
 
@@ -251,7 +288,8 @@ export const HomePage: React.FC = () => {
         }
 
         .hero-buttons button.tamil {
-          font-size: 0.75rem;
+          font-size: 0.8rem;
+          line-height: 1.2;
         }
 
         .hero-buttons button:hover {
