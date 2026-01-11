@@ -172,6 +172,9 @@ export const PrayerRequestPage: React.FC = () => {
           .prayer-submit-button {
             height: 3rem !important;
             font-size: 0.875rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
           }
           
           .prayer-submit-button.tamil {
@@ -224,6 +227,19 @@ export const PrayerRequestPage: React.FC = () => {
           }
           
           .prayer-form-label.tamil {
+            font-size: 0.75rem !important;
+          }
+          
+          .prayer-submit-button {
+            height: 2.75rem !important;
+            font-size: 0.8rem !important;
+            margin-top: 1rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+          }
+          
+          .prayer-submit-button.tamil {
             font-size: 0.75rem !important;
           }
           
