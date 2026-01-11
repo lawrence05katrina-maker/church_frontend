@@ -808,7 +808,7 @@ const translations = {
     'testimonies.title': 'அதிசயங்கள் & சாட்சியங்கள்',
     'testimonies.subtitle': 'புனித தேவசகாயம் வழியாக விசுவாசத்தாலும் இறைவேண்டுதல்களாலும் கிடைத்த பதில்களை விவரிக்கும் ஊக்கமளிக்கும் அனுபவக் கதைகளை வாசியுங்கள்.',
     'testimonies.loading': 'சாட்சியங்கள் ஏற்றப்படுகின்றன...',
-    'testimonies.share.title': 'உங்கள் சாட்சியத்தைப் பகிருங்கள்',
+    'testimonies.share.title': 'சாட்சியம் பகிர',
     'testimonies.share.button': 'சாட்சியம் பகிர',
     
     // Footer
