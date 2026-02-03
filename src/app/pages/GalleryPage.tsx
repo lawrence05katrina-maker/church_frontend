@@ -72,7 +72,9 @@ const getImageUrl = (imageUrl: string | null | undefined): string => {
   if (!imageUrl) return 'https://images.unsplash.com/photo-1758517936201-cb4b8fd39e71?w=400&h=300&fit=crop';
   if (imageUrl.startsWith('http')) return imageUrl;
   if (imageUrl.startsWith('/uploads')) {
-    return `http://localhost:5000${imageUrl}`;
+    // Use environment variable for backend URL, fallback to localhost for development
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+    return `${backendUrl}${imageUrl}`;
   }
   return imageUrl;
 };

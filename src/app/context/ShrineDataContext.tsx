@@ -32,7 +32,7 @@ export interface PrayerRequest {
   name: string;
   email?: string;
   prayer: string;
-  date: string;
+  created_at: string;
 }
 
 export interface Testimony {
@@ -100,7 +100,7 @@ interface ShrineDataContextType {
   addDonation: (donation: Omit<Donation, 'id' | 'date'>) => void;
   addMassBooking: (booking: Omit<MassBooking, 'id' | 'status' | 'submittedAt'>) => void;
   updateMassBookingStatus: (id: string, status: 'approved' | 'rejected') => void;
-  addPrayerRequest: (request: Omit<PrayerRequest, 'id' | 'date'>) => void;
+  addPrayerRequest: (request: Omit<PrayerRequest, 'id' | 'created_at'>) => void;
   addTestimony: (testimony: Omit<Testimony, 'id' | 'date' | 'status'>) => void;
   updateTestimonyStatus: (id: string, status: 'approved' | 'rejected') => void;
   addGalleryItem: (item: Omit<GalleryItem, 'id' | 'date'>) => void;
@@ -365,11 +365,11 @@ export const ShrineDataProvider: React.FC<{ children: ReactNode }> = ({ children
     );
   };
 
-  const addPrayerRequest = (request: Omit<PrayerRequest, 'id' | 'date'>) => {
+  const addPrayerRequest = (request: Omit<PrayerRequest, 'id' | 'created_at'>) => {
     const newRequest: PrayerRequest = {
       ...request,
       id: Date.now().toString(),
-      date: new Date().toISOString(),
+      created_at: new Date().toISOString(),
     };
     setPrayerRequests(prev => [newRequest, ...prev]);
   };

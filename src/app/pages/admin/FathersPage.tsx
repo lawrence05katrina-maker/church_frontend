@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { getActiveFathers } from '../../../api/fathersApi';
 
 type Priest = {
   id: number;
@@ -46,14 +47,13 @@ const FathersPage: React.FC = () => {
   const fetchFathersData = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/fathers/active');
+      const response = await getActiveFathers();
       
-      if (!response.ok) {
+      if (response.data.success) {
+        setFathersData(response.data.data);
+      } else {
         throw new Error('Failed to fetch fathers data');
       }
-
-      const data = await response.json();
-      setFathersData(data.data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load fathers data');
     } finally {

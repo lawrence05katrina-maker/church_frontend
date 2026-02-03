@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '../components/ui/carousel';
 import { LivestreamNotification } from '../components/LivestreamNotification';
 import { useLanguage } from '../context/LanguageContext';
 import { getActiveAnnouncements } from '../../api/announcementApi';
@@ -51,7 +52,7 @@ export const HomePage: React.FC = () => {
     const loadManagementTeam = async () => {
       try {
         setManagementLoading(true);
-        const response = await ManagementApi.getFeatured(4);
+        const response = await ManagementApi.getAllActive();
         if (response.success) {
           setManagementMembers(response.data || []);
         }
@@ -94,7 +95,9 @@ export const HomePage: React.FC = () => {
     if (!imageUrl) return null;
     if (imageUrl.startsWith('http')) return imageUrl;
     if (imageUrl.startsWith('/uploads')) {
-      return `http://localhost:5000${imageUrl}`;
+      // Use environment variable for backend URL, fallback to localhost for development
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+      return `${backendUrl}${imageUrl}`;
     }
     return imageUrl;
   };
@@ -309,6 +312,62 @@ export const HomePage: React.FC = () => {
           font-size: 0.8em;
         }
 
+        /* Management Carousel Styles */
+        .management-carousel {
+          position: relative;
+        }
+
+        .management-carousel .carousel-navigation {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 10;
+        }
+
+        .management-carousel .carousel-navigation.prev {
+          left: -3rem;
+        }
+
+        .management-carousel .carousel-navigation.next {
+          right: -3rem;
+        }
+
+        /* Mobile carousel navigation */
+        @media (max-width: 640px) {
+          .management-carousel .carousel-navigation {
+            display: none;
+          }
+        }
+
+        /* Carousel item hover effects */
+        .management-card {
+          transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .management-card:hover {
+          transform: translateY(-8px) scale(1.02);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 20px rgba(34, 197, 94, 0.15);
+        }
+
+        /* Ensure consistent card heights in carousel */
+        .management-carousel .carousel-item {
+          height: auto;
+          display: flex;
+        }
+
+        .management-carousel .management-card {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .management-carousel .card-content {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+
         /* Mobile-specific accommodation section styles */
         @media (max-width: 640px) {
           .accommodation-card {
@@ -463,7 +522,7 @@ export const HomePage: React.FC = () => {
             preload="auto"
             onError={handleVideoError}
           >
-            <source src="/lv_0_20260107100209.mp4" type="video/mp4" />
+            <source src="https://res.cloudinary.com/decddzq7e/video/upload/v1770099308/lv_0_20260203114036_uwnlie.mp4" type="video/mp4" />
           </video>
         )}
         
@@ -576,37 +635,88 @@ export const HomePage: React.FC = () => {
               ))}
             </div>
           ) : managementMembers.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {managementMembers.slice(0, 4).map((member, index) => (
-                <Card key={member.id} className={`border-0 hover:shadow-lg transition-shadow premium-card-hover ${isVisible ? `premium-fadeInUp premium-stagger-${index + 2}` : 'opacity-0'}`}>
-                  {getImageUrl(member.image_url) ? (
-                    <img
-                      src={getImageUrl(member.image_url)!}
-                      alt={member.name}
-                      className="w-full h-56 object-cover rounded-t-lg"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                        const placeholder = target.nextElementSibling as HTMLElement;
-                        if (placeholder) placeholder.style.display = 'flex';
-                      }}
-                    />
-                  ) : null}
-                  <div 
-                    className={`w-full h-56 bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center rounded-t-lg ${getImageUrl(member.image_url) ? 'hidden' : 'flex'}`}
-                  >
-                    <Users className="w-16 h-16 text-green-400" />
-                  </div>
-                  <CardContent className="pt-4">
-                    <h3 className="font-semibold text-lg">{member.name}</h3>
-                    <p className="text-sm text-gray-500 mb-3">{member.position}</p>
-                    <p className="text-sm text-gray-600">
-                      {(member.description || `${member.name} serves as ${member.position}, contributing to the spiritual and administrative leadership of our parish community.`).replace(/\s*\[UPDATED\]/g, '')}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            managementMembers.length > 4 ? (
+              // Carousel for more than 4 members
+              <div className="management-carousel relative">
+                <Carousel
+                  opts={{
+                    align: "start",
+                    loop: true,
+                    slidesToScroll: 1,
+                  }}
+                  className="w-full"
+                >
+                  <CarouselContent className="-ml-2 md:-ml-4">
+                    {managementMembers.map((member, index) => (
+                      <CarouselItem key={member.id} className="carousel-item pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/4">
+                        <Card className={`management-card border-0 hover:shadow-lg premium-card-hover ${isVisible ? `premium-fadeInUp premium-stagger-${(index % 4) + 2}` : 'opacity-0'}`}>
+                          {getImageUrl(member.image_url) ? (
+                            <img
+                              src={getImageUrl(member.image_url)!}
+                              alt={member.name}
+                              className="w-full h-56 object-cover rounded-t-lg"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                                const placeholder = target.nextElementSibling as HTMLElement;
+                                if (placeholder) placeholder.style.display = 'flex';
+                              }}
+                            />
+                          ) : null}
+                          <div 
+                            className={`w-full h-56 bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center rounded-t-lg ${getImageUrl(member.image_url) ? 'hidden' : 'flex'}`}
+                          >
+                            <Users className="w-16 h-16 text-green-400" />
+                          </div>
+                          <CardContent className="card-content pt-4">
+                            <h3 className="font-semibold text-lg">{member.name}</h3>
+                            <p className="text-sm text-gray-500 mb-3">{member.position}</p>
+                            <p className="text-sm text-gray-600">
+                              {(member.description || `${member.name} serves as ${member.position}, contributing to the spiritual and administrative leadership of our parish community.`).replace(/\s*\[UPDATED\]/g, '')}
+                            </p>
+                          </CardContent>
+                        </Card>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="carousel-navigation prev hidden sm:flex -left-12 bg-white border-green-200 hover:bg-green-50 hover:border-green-300 text-green-700 shadow-lg" />
+                  <CarouselNext className="carousel-navigation next hidden sm:flex -right-12 bg-white border-green-200 hover:bg-green-50 hover:border-green-300 text-green-700 shadow-lg" />
+                </Carousel>
+              </div>
+            ) : (
+              // Grid for 4 or fewer members
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {managementMembers.map((member, index) => (
+                  <Card key={member.id} className={`border-0 hover:shadow-lg transition-all duration-300 hover:-translate-y-2 premium-card-hover ${isVisible ? `premium-fadeInUp premium-stagger-${index + 2}` : 'opacity-0'}`}>
+                    {getImageUrl(member.image_url) ? (
+                      <img
+                        src={getImageUrl(member.image_url)!}
+                        alt={member.name}
+                        className="w-full h-56 object-cover rounded-t-lg"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const placeholder = target.nextElementSibling as HTMLElement;
+                          if (placeholder) placeholder.style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    <div 
+                      className={`w-full h-56 bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center rounded-t-lg ${getImageUrl(member.image_url) ? 'hidden' : 'flex'}`}
+                    >
+                      <Users className="w-16 h-16 text-green-400" />
+                    </div>
+                    <CardContent className="pt-4">
+                      <h3 className="font-semibold text-lg">{member.name}</h3>
+                      <p className="text-sm text-gray-500 mb-3">{member.position}</p>
+                      <p className="text-sm text-gray-600">
+                        {(member.description || `${member.name} serves as ${member.position}, contributing to the spiritual and administrative leadership of our parish community.`).replace(/\s*\[UPDATED\]/g, '')}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )
           ) : (
             <div className="text-center py-12">
               <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />

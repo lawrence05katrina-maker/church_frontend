@@ -367,14 +367,9 @@ class GalleryApi {
   // Helper method to validate image file
   static validateImageFile(file: File): boolean {
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-    const maxSize = 10 * 1024 * 1024; // 10MB
 
     if (!validTypes.includes(file.type)) {
       throw new Error('Invalid file type. Please upload JPEG, PNG, GIF, or WebP images.');
-    }
-
-    if (file.size > maxSize) {
-      throw new Error('File size too large. Please upload images smaller than 10MB.');
     }
 
     return true;

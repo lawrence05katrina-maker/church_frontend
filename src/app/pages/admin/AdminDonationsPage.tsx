@@ -20,6 +20,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { getAllDonations, updateDonationStatus, deleteDonation as deleteDonationApi } from '../../../api/donationApi';
 
 interface Payment {
   id: number;
@@ -50,11 +51,10 @@ export const AdminDonationsPage: React.FC = () => {
 
   const fetchPayments = async () => {
     try {
-      const response = await fetch('/api/donations');
-      if (response.ok) {
-        const data = await response.json();
+      const response = await getAllDonations();
+      if (response.data.success) {
         // Ensure we always have a valid array
-        const paymentsData = Array.isArray(data.data) ? data.data : [];
+        const paymentsData = Array.isArray(response.data.data) ? response.data.data : [];
         setPayments(paymentsData);
       } else {
         toast.error('Failed to fetch donation payments');
@@ -72,15 +72,9 @@ export const AdminDonationsPage: React.FC = () => {
   const updatePaymentStatus = async (id: number, status: 'verified') => {
     try {
       setProcessingId(id);
-      const response = await fetch(`/api/donations/${id}/status`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status }),
-      });
+      const response = await updateDonationStatus(id, status);
 
-      if (response.ok) {
+      if (response.data.success) {
         setPayments(prev => 
           prev.map(payment => 
             payment.id === id ? { ...payment, status } : payment
@@ -101,11 +95,9 @@ export const AdminDonationsPage: React.FC = () => {
   const deleteDonation = async (id: number) => {
     try {
       setProcessingId(id);
-      const response = await fetch(`/api/donations/${id}`, {
-        method: 'DELETE',
-      });
+      const response = await deleteDonationApi(id);
 
-      if (response.ok) {
+      if (response.data.success) {
         setPayments(prev => prev.filter(payment => payment.id !== id));
         toast.success('Donation deleted successfully!');
       } else {

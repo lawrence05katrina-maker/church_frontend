@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { useShrineData } from '../../context/ShrineDataContext';
 import { IndianRupee, Calendar, MessageCircle, Star, TrendingUp } from 'lucide-react';
+import { getDonationStats } from '../../../api/donationApi';
 
 interface DonationStats {
   total_donations: number;
@@ -24,12 +25,9 @@ export const AdminDashboard: React.FC = () => {
   useEffect(() => {
     const fetchDonationStats = async () => {
       try {
-        const response = await fetch('/api/donations/stats');
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success) {
-            setDonationStats(data.data);
-          }
+        const response = await getDonationStats();
+        if (response.data.success) {
+          setDonationStats(response.data.data);
         }
       } catch (error) {
         console.error('Error fetching donation statistics:', error);

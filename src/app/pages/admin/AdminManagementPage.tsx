@@ -36,7 +36,9 @@ const getImageUrl = (imageUrl: string | null | undefined): string => {
   if (!imageUrl) return '/person-placeholder.svg';
   if (imageUrl.startsWith('http')) return imageUrl;
   if (imageUrl.startsWith('/uploads')) {
-    return `http://localhost:5000${imageUrl}`;
+    // Use environment variable for backend URL, fallback to localhost for development
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+    return `${backendUrl}${imageUrl}`;
   }
   return imageUrl;
 };
@@ -745,18 +747,13 @@ export const AdminManagementPage: React.FC = () => {
                 
                 <div className="md:col-span-2">
                   <Label htmlFor="position">Position *</Label>
-                  <Select value={formData.position} onValueChange={(value) => setFormData(prev => ({ ...prev, position: value }))}>
-                    <SelectTrigger className="border-0 bg-white focus:ring-2 focus:ring-green-400">
-                      <SelectValue placeholder="Select position" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {positions.map(pos => (
-                        <SelectItem key={pos.value} value={pos.value}>
-                          {pos.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    id="position"
+                    value={formData.position}
+                    onChange={(e) => setFormData(prev => ({ ...prev, position: e.target.value }))}
+                    placeholder="Enter position (e.g., Parish Priest, Secretary, etc.)"
+                    className="border-0 bg-white focus:ring-2 focus:ring-green-400"
+                  />
                 </div>
                 
                 <div className="md:col-span-2">

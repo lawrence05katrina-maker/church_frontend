@@ -341,7 +341,7 @@ export const AdminAllInOnePage: React.FC = () => {
 
                           <div className="flex justify-between items-center mt-3">
                             <p className="text-xs text-gray-500">
-                              {new Date(request.date).toLocaleString()}
+                              {new Date(request.created_at).toLocaleString()}
                             </p>
 
                             <Button

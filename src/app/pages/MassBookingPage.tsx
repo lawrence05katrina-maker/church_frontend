@@ -9,6 +9,7 @@ import { useShrineData } from '../context/ShrineDataContext';
 import { useLanguage } from '../context/LanguageContext';
 import { Calendar, IndianRupee, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { createMassBooking } from '../../api/massBookingApi';
 
 export const MassBookingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -133,7 +134,7 @@ export const MassBookingPage: React.FC = () => {
     }
 
     try {
-      // Submit booking to backend API
+      // Submit booking to backend API using configured axios
       const bookingData = {
         name: formData.name,
         email: formData.email,
@@ -146,17 +147,12 @@ export const MassBookingPage: React.FC = () => {
         totalAmount: totalAmount,
       };
 
-      const response = await fetch('/api/mass-bookings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bookingData),
-      });
+      // Import api at the top of the file
+      const response = await createMassBooking(bookingData);
 
-      const result = await response.json();
+      const result = response.data;
 
-      if (!response.ok || !result.success) {
+      if (!result.success) {
         throw new Error(result.message || 'Failed to submit booking');
       }
 

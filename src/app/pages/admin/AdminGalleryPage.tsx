@@ -95,7 +95,9 @@ const getImageUrl = (imageUrl: string | null | undefined): string => {
   if (!imageUrl) return 'https://images.unsplash.com/photo-1758517936201-cb4b8fd39e71?w=400&h=300&fit=crop';
   if (imageUrl.startsWith('http')) return imageUrl;
   if (imageUrl.startsWith('/uploads')) {
-    return `http://localhost:5000${imageUrl}`;
+    // Use environment variable for backend URL, fallback to localhost for development
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+    return `${backendUrl}${imageUrl}`;
   }
   return imageUrl;
 };
@@ -214,15 +216,9 @@ export const AdminGalleryPage: React.FC = () => {
     const file = files[0];
     const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
     const validVideoTypes = ['video/mp4', 'video/webm', 'video/ogg', 'video/avi', 'video/mov'];
-    const maxSize = 50 * 1024 * 1024; // 50MB
     
     if (!validImageTypes.includes(file.type) && !validVideoTypes.includes(file.type)) {
-      toast.error('Please select a valid image or video file');
-      return;
-    }
-    
-    if (file.size > maxSize) {
-      toast.error('File size must be less than 50MB');
+      toast.error('Please select a valid image or video file (JPEG, PNG, GIF, WebP, MP4, WebM, OGG)');
       return;
     }
     
@@ -888,7 +884,7 @@ export const AdminGalleryPage: React.FC = () => {
                         <p className="text-sm text-gray-500 mb-4">
                           Supports images (JPEG, PNG, GIF, WebP) and videos (MP4, WebM, OGG)
                         </p>
-                        <p className="text-xs text-gray-400">Maximum file size: 50MB</p>
+                        <p className="text-xs text-gray-400">Maximum file size: 10MB</p>
                       </div>
                       <Button
                         variant="ghost"

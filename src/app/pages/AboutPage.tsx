@@ -218,7 +218,7 @@ export const AboutPage: React.FC = () => {
             <img
               src="/about3.jpeg"
               alt={t('about.image.memorial2')}
-              className="w-full h-full object-cover"
+              className="w-full h-[800px] object-cover"
             />
           </div>
           <div className={`space-y-6 ${isVisible ? 'animate-slideInRight stagger-3' : 'opacity-0'}`}>
@@ -249,6 +249,10 @@ export const AboutPage: React.FC = () => {
             <div className="border-l-4 border-yellow-500 pl-6 py-3">
               <div className={`text-yellow-800 font-bold text-lg mb-2 ${isTamil ? 'tamil-text' : ''}`}>{t('about.timeline.date.canonized')}</div>
               <p className={`text-gray-700 ${isTamil ? 'tamil-text' : ''}`}>{t('about.timeline.canonized')}</p>
+            </div>
+            <div className="border-l-4 border-purple-500 pl-6 py-3">
+              <div className={`text-purple-800 font-bold text-lg mb-2 ${isTamil ? 'tamil-text' : ''}`}>January 14, 2026</div>
+              <p className={`text-gray-700 ${isTamil ? 'tamil-text' : ''}`}>Declared "The Patron Saint of the Laity of India" by Archbishop Leopoldo Girelli, the Apostolic Nuncio to India</p>
             </div>
           </div>
         </div>
@@ -390,18 +394,49 @@ export const AboutPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Shrine Information */}
+      {/* About Our Shrine */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-4xl mx-auto">
           <div className={`flex items-center gap-3 mb-6 ${isVisible ? 'animate-slideInLeft stagger-1' : 'opacity-0'}`}>
             <Heart className="w-8 h-8 text-green-700 animate-pulse-custom" />
             <h2 className={`text-3xl font-semibold text-green-800 ${isTamil ? 'tamil-heading' : ''}`}>
-              {t('about.shrine.title')}
+              About Our Shrine
             </h2>
           </div>
-          <div className={`space-y-4 text-gray-700 leading-relaxed ${isTamil ? 'tamil-text' : ''} ${isVisible ? 'animate-fadeInUp stagger-2' : 'opacity-0'}`}>
-            <p>{t('about.shrine.description')}</p>
-            <p>{t('about.shrine.pilgrimage')}</p>
+          <div className={`space-y-6 text-gray-700 leading-relaxed ${isTamil ? 'tamil-text' : ''} ${isVisible ? 'animate-fadeInUp stagger-2' : 'opacity-0'}`}>
+            <p>
+              Church of Our Lady of Sorrows in Devasahayam Mount is dedicated to honoring Mary's role in the suffering of Saint Devasahayam Pillai. The shrine commemorates the holy place where Devasahayam Pillai was shot, marking it as a site of profound historical and spiritual significance.
+            </p>
+            <p>
+              It serves as a place of devotion, particularly for those reflecting on the martyrdom of St. Devasahayam. It is closely associated with the life and, as mentioned, death of the first Indian layman to be canonized as a saint. The shrine is a place of pilgrimage in South India, often visited along with the nearby Puliyoorkurichi church.
+            </p>
+            
+            {/* Historical Milestones */}
+            <div className="bg-green-100 border-l-4 border-green-500 p-6 my-8 rounded-r-lg">
+              <h4 className={`text-green-800 mb-4 font-semibold text-lg ${isTamil ? 'tamil-heading' : ''}`}>
+                Historical Milestones
+              </h4>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
+                  <p className={`text-green-800 ${isTamil ? 'tamil-text' : ''}`}>
+                    <strong>1820:</strong> This old church was constructed by the local residents to dedicate for honoring the Holy Mother of Sorrows and has been a spiritual cornerstone for 200 years.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
+                  <p className={`text-green-800 ${isTamil ? 'tamil-text' : ''}`}>
+                    <strong>December 28, 2025:</strong> Church of Our Lady of Sorrows at Devasahayam Mount was declared a Shrine by The Most Rev. Nazarene Soosai, the bishop of Kottar.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-purple-600 rounded-full mt-2 flex-shrink-0"></div>
+                  <p className={`text-purple-800 ${isTamil ? 'tamil-text' : ''}`}>
+                    <strong>January 14, 2026:</strong> The Solemn Declaration of Martyr Saint Devasahayam as "the Patron Saint of the Laity of India" in Devasahayam Mount by His Excellency Archbishop Leopoldo Girelli, the Apostolic Nuncio to India.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -479,3 +514,4 @@ export const AboutPage: React.FC = () => {
     </div>
   );
 };
+  
