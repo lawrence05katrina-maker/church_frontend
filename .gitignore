@@ -4,7 +4,7 @@ node_modules/
 .yarn-integrity
 
 # Production builds
-dist/
+# dist/  # Temporarily including dist for deployment
 build/
 
 # Environment variables
