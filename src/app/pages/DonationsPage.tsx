@@ -299,7 +299,7 @@ export const DonationsPage: React.FC = () => {
                   {/* Animated Form Fields */}
                   <div className={`form-field ${isVisible ? 'animate-fadeInUp stagger-3' : 'opacity-0'}`}>
                     <Label htmlFor="donorName" className={getTamilLabelClass("form-label-mobile text-green-800 font-medium block mb-2")}>
-                      Your Name <span className='text-red-500'>*</span>
+                      {t('donations.fullName')} <span className='text-red-500'>*</span>
                     </Label>
                     <Input
                       id="donorName"
@@ -313,7 +313,7 @@ export const DonationsPage: React.FC = () => {
                   </div>
 
                   <div className={`form-field ${isVisible ? 'animate-fadeInUp stagger-4' : 'opacity-0'}`}>
-                    <Label htmlFor="email" className={getTamilLabelClass("form-label-mobile text-green-800 font-medium block mb-2")}>Email Address (Optional)</Label>
+                    <Label htmlFor="email" className={getTamilLabelClass("form-label-mobile text-green-800 font-medium block mb-2")}>{t('donations.email')}</Label>
                     <Input
                       id="email"
                       name="email"
@@ -326,7 +326,7 @@ export const DonationsPage: React.FC = () => {
                   </div>
 
                   <div className={`form-field ${isVisible ? 'animate-fadeInUp stagger-5' : 'opacity-0'}`}>
-                    <Label htmlFor="phone" className={getTamilLabelClass("form-label-mobile text-green-800 font-medium block mb-2")}>Phone Number (Optional)</Label>
+                    <Label htmlFor="phone" className={getTamilLabelClass("form-label-mobile text-green-800 font-medium block mb-2")}>{t('donations.phone')}</Label>
                     <Input
                       id="phone"
                       name="phone"

@@ -3,14 +3,13 @@ import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { LivestreamNotification } from '../components/LivestreamNotification';
-import { useShrineData } from '../context/ShrineDataContext';
 import { useLanguage } from '../context/LanguageContext';
 import { getActiveAnnouncements } from '../../api/announcementApi';
 import ManagementApi from '../../api/managementApi';
 import { Calendar, Heart, Send, Users } from 'lucide-react';
+import { MdPhoneInTalk } from "react-icons/md";
 
 export const HomePage: React.FC = () => {
-  const { siteContent } = useShrineData();
   const { t, language } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const [currentTitleIndex, setCurrentTitleIndex] = useState(0);
@@ -21,8 +20,8 @@ export const HomePage: React.FC = () => {
   const [managementLoading, setManagementLoading] = useState(true);
 
   const heroTitles = [
-    t('hero.title2'),
-    t('hero.title1')
+    t('hero.title1'),
+    t('hero.title2')
   ];
 
   const isTamil = language === 'தமிழ்';
@@ -310,6 +309,37 @@ export const HomePage: React.FC = () => {
           font-size: 0.8em;
         }
 
+        /* Mobile-specific accommodation section styles */
+        @media (max-width: 640px) {
+          .accommodation-card {
+            margin-bottom: 1rem;
+          }
+          
+          .accommodation-card img {
+            height: 12rem;
+          }
+          
+          .accommodation-card .card-content {
+            padding: 1rem;
+          }
+          
+          .accommodation-title {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+          }
+          
+          .accommodation-contact {
+            padding: 1rem;
+            text-align: center;
+          }
+          
+          .accommodation-contact .phone-number {
+            font-size: 1rem;
+            margin-top: 0.75rem;
+          }
+        }
+
         /* Card hover effects for other sections */
         .premium-card-hover {
           transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -516,7 +546,7 @@ export const HomePage: React.FC = () => {
               <div className="rounded-lg overflow-hidden shadow-lg premium-card-hover">
                 <img
                   src="/mary.jpeg"
-                  alt="Our Lady of Sorrows"
+                  alt="St. Devasahayam Martyrdom place"
                   className="w-full h-96 object-cover"
                 />
               </div>
@@ -629,9 +659,91 @@ export const HomePage: React.FC = () => {
         </div>
       )}
 
+      {/* Rooms & Accommodation Section */}
+      <div className="bg-white py-12 sm:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Title */}
+          <h2 className={`accommodation-title text-2xl sm:text-3xl font-semibold text-green-800 mb-8 sm:mb-10 text-center sm:text-left ${isVisible ? 'premium-fadeInUp premium-stagger-1' : 'opacity-0'} ${isTamil ? 'tamil-heading' : ''}`}>
+            {t('accommodation.title')}
+          </h2>
+
+          {/* Rooms Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {/* Card 1 */}
+            <Card className={`accommodation-card border-green-200 premium-card-hover ${isVisible ? 'premium-scaleIn premium-stagger-2' : 'opacity-0'}`}>
+              <img src="/room1.jpg" alt="Pilgrim Rooms" className="w-full h-48 sm:h-56 object-cover rounded-t-lg" />
+              <CardContent className="card-content pt-4 px-4 sm:px-6">
+                <h3 className={`font-semibold text-green-800 mb-2 text-base sm:text-lg ${isTamil ? 'tamil-card-title' : ''}`}>
+                  {t('accommodation.pilgrim.rooms')}
+                </h3>
+                <p className={`text-sm text-gray-600 leading-relaxed ${isTamil ? 'tamil-text' : ''}`}>
+                  {t('accommodation.pilgrim.desc')}
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Card 2 */}
+            <Card className={`accommodation-card border-green-200 premium-card-hover ${isVisible ? 'premium-scaleIn premium-stagger-3' : 'opacity-0'}`}>
+              <img src="/room2.jpg" alt="Family Rooms" className="w-full h-48 sm:h-56 object-cover rounded-t-lg" />
+              <CardContent className="card-content pt-4 px-4 sm:px-6">
+                <h3 className={`font-semibold text-green-800 mb-2 text-base sm:text-lg ${isTamil ? 'tamil-card-title' : ''}`}>
+                  {t('accommodation.family.rooms')}
+                </h3>
+                <p className={`text-sm text-gray-600 leading-relaxed ${isTamil ? 'tamil-text' : ''}`}>
+                  {t('accommodation.family.desc')}
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Card 3 */}
+            <Card className={`accommodation-card border-green-200 premium-card-hover ${isVisible ? 'premium-scaleIn premium-stagger-4' : 'opacity-0'}`}>
+              <img src="/room3.jpg" alt="Group Stay" className="w-full h-48 sm:h-56 object-cover rounded-t-lg" />
+              <CardContent className="card-content pt-4 px-4 sm:px-6">
+                <h3 className={`font-semibold text-green-800 mb-2 text-base sm:text-lg ${isTamil ? 'tamil-card-title' : ''}`}>
+                  {t('accommodation.group.stay')}
+                </h3>
+                <p className={`text-sm text-gray-600 leading-relaxed ${isTamil ? 'tamil-text' : ''}`}>
+                  {t('accommodation.group.desc')}
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Card 4 */}
+            <Card className={`accommodation-card border-green-200 premium-card-hover ${isVisible ? 'premium-scaleIn premium-stagger-5' : 'opacity-0'}`}>
+              <img src="/room4.jpg" alt="Affordable Rooms" className="w-full h-48 sm:h-56 object-cover rounded-t-lg" />
+              <CardContent className="card-content pt-4 px-4 sm:px-6">
+                <h3 className={`font-semibold text-green-800 mb-2 text-base sm:text-lg ${isTamil ? 'tamil-card-title' : ''}`}>
+                  {t('accommodation.affordable.rooms')}
+                </h3>
+                <p className={`text-sm text-gray-600 leading-relaxed ${isTamil ? 'tamil-text' : ''}`}>
+                  {t('accommodation.affordable.desc')}
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Contact Section */}
+          <div className={`accommodation-contact mt-8 sm:mt-12 bg-green-50 border border-green-200 rounded-xl p-4 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 ${isVisible ? 'premium-slideUp premium-stagger-6' : 'opacity-0'}`}>
+            <div className="flex-1">
+              <h4 className={`font-semibold text-green-800 mb-1 text-base sm:text-lg ${isTamil ? 'tamil-card-title' : ''}`}>
+                {t('accommodation.enquiries')}
+              </h4>
+              <p className={`text-sm text-gray-700 leading-relaxed ${isTamil ? 'tamil-text' : ''}`}>
+                {t('accommodation.contact.desc')}
+              </p>
+            </div>
+            <div className="phone-number text-base sm:text-lg font-semibold text-green-700 whitespace-nowrap flex items-center gap-2">
+              <MdPhoneInTalk className="w-5 h-5" />
+              +91 89037 60869
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Call to Action Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid md:grid-cols-3 gap-8">
+      <div className="bg-green-50 py-16 pb-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-3 gap-8 pb-16">
           <Link to="/mass-booking">
             <Card className={`text-center border-blue-200 hover:shadow-lg transition-shadow cursor-pointer premium-card-hover ${isVisible ? 'premium-scaleIn premium-stagger-1' : 'opacity-0'}`}>
               <CardHeader>
@@ -679,6 +791,7 @@ export const HomePage: React.FC = () => {
               </CardContent>
             </Card>
           </Link>
+          </div>
         </div>
       </div>
     </div>

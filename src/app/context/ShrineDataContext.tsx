@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { getApprovedTestimonies } from '../../api/testimonyApi';
-import { getActiveAnnouncements } from '../../api/announcementApi';
+import { getActiveAnnouncements, createAnnouncement, deleteAnnouncement, updateAnnouncement } from '../../api/announcementApi';
 import GalleryApi from '../../api/galleryApi';
 
 // Types
@@ -92,6 +92,7 @@ interface ShrineDataContextType {
   prayerRequests: PrayerRequest[];
   testimonies: Testimony[];
   gallery: GalleryItem[];
+  announcements: Announcement[];
   donationPurposes: DonationPurpose[];
   siteContent: SiteContent;
   
@@ -104,6 +105,9 @@ interface ShrineDataContextType {
   updateTestimonyStatus: (id: string, status: 'approved' | 'rejected') => void;
   addGalleryItem: (item: Omit<GalleryItem, 'id' | 'date'>) => void;
   deleteGalleryItem: (id: string) => void;
+  addAnnouncement: (announcement: Omit<Announcement, 'id' | 'date'>) => void;
+  deleteAnnouncement: (id: string) => void;
+  updateAnnouncement: (id: string, updates: Partial<Announcement>) => void;
   addDonationPurpose: (purpose: Omit<DonationPurpose, 'id'>) => void;
   deleteDonationPurpose: (id: string) => void;
   updateSiteContent: (content: Partial<SiteContent>) => void;
@@ -115,8 +119,8 @@ const ShrineDataContext = createContext<ShrineDataContextType | undefined>(undef
 const initialSiteContent: SiteContent = {
   heroTitle: 'Martyr St.Devashayam Shrine',
   heroSubtitle: 'A Sacred Place of Prayer and Pilgrimage',
-  aboutShort: 'Welcome to Martyr St.Devashayam Shrine, a blessed sanctuary dedicated to Saint Devasahayam Pillai, the first Indian layman to be canonized by the Catholic Church.',
-  aboutHistory: 'The Martyr St.Devashayam Shrine stands as a testament to faith and devotion. Saint Devasahayam Pillai, martyred in 1752 for his unwavering faith, was canonized by Pope Francis in 2022. This shrine honors his legacy and welcomes pilgrims from around the world seeking spiritual solace and divine blessings.',
+  aboutShort: 'Welcome to Martyr St.Devashayam Shrine, a blessed sanctuary dedicated to Saint Devasahayam , the first Indian layman to be canonized by the Catholic Church.',
+  aboutHistory: 'The Martyr St.Devashayam Shrine stands as a testament to faith and devotion. Saint Devasahayam , martyred in 1752 for his unwavering faith, was canonized by Pope Francis in 2022. This shrine honors his legacy and welcomes pilgrims from around the world seeking spiritual solace and divine blessings.',
   vision: 'To be a beacon of faith, hope, and love, inspiring believers to follow the path of Saint Devasahayam through devotion, service, and sacrifice.',
   mission: 'Our mission is to provide a sacred space for worship, prayer, and spiritual growth while serving the community through charitable works and spreading the message of Christ.',
   contactAddress: 'Mount Devasahayam, Pilgrimage Road, Tamil Nadu, India',
@@ -210,15 +214,15 @@ export const ShrineDataProvider: React.FC<{ children: ReactNode }> = ({ children
     const fetchGallery = async () => {
       try {
         const response = await GalleryApi.getPublicGallery();
-        if (response.data.success) {
-          const apiGallery = response.data.data.map((item: any) => ({
+        if (response.success) {
+          const apiGallery = response.data?.map((item: any) => ({
             id: item.id.toString(),
             type: item.file_type || 'image',
             url: item.image_url,
             title: item.title,
             category: item.category || 'general',
             date: item.created_at
-          }));
+          })) || [];
           setGallery(apiGallery);
         }
       } catch (error) {
@@ -403,7 +407,7 @@ export const ShrineDataProvider: React.FC<{ children: ReactNode }> = ({ children
 
   const addAnnouncement = async (announcement: Omit<Announcement, 'id' | 'date'>) => {
     try {
-      const response = await createAnnouncementApi(announcement);
+      const response = await createAnnouncement(announcement);
       if (response.data.success) {
         // Refresh announcements from API
         const updatedResponse = await getActiveAnnouncements();
@@ -430,9 +434,9 @@ export const ShrineDataProvider: React.FC<{ children: ReactNode }> = ({ children
     }
   };
 
-  const deleteAnnouncement = async (id: string) => {
+  const deleteAnnouncementHandler = async (id: string) => {
     try {
-      const response = await deleteAnnouncementApi(id);
+      const response = await deleteAnnouncement(id);
       if (response.data.success) {
         // Remove from local state immediately for better UX
         setAnnouncements(prev => prev.filter(item => item.id !== id));
@@ -458,9 +462,9 @@ export const ShrineDataProvider: React.FC<{ children: ReactNode }> = ({ children
     }
   };
 
-  const updateAnnouncement = async (id: string, updates: Partial<Announcement>) => {
+  const updateAnnouncementHandler = async (id: string, updates: Partial<Announcement>) => {
     try {
-      const response = await updateAnnouncementApi(id, updates);
+      const response = await updateAnnouncement(id, updates);
       if (response.data.success) {
         // Refresh announcements from API
         const updatedResponse = await getActiveAnnouncements();
@@ -523,8 +527,8 @@ export const ShrineDataProvider: React.FC<{ children: ReactNode }> = ({ children
         addGalleryItem,
         deleteGalleryItem,
         addAnnouncement,
-        deleteAnnouncement,
-        updateAnnouncement,
+        deleteAnnouncement: deleteAnnouncementHandler,
+        updateAnnouncement: updateAnnouncementHandler,
         addDonationPurpose,
         deleteDonationPurpose,
         updateSiteContent,
