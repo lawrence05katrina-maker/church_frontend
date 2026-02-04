@@ -175,9 +175,9 @@ export const PublicNavigation: React.FC = () => {
 
         {/* Mobile and Tablet Navigation with smooth slide */}
         <div className={`lg:hidden overflow-hidden transition-all duration-300 ${
-          mobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+          mobileMenuOpen ? 'max-h-[80vh] opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className="py-4 border-t border-gray-200 space-y-1">
+          <div className="py-4 border-t border-gray-200 space-y-1 max-h-[75vh] overflow-y-auto">
             {navItems.map((item, index) => (
               <Link
                 key={item.path}
@@ -202,14 +202,14 @@ export const PublicNavigation: React.FC = () => {
             
             {/* Mobile Language Options */}
             <div className="px-4 py-2">
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-3">
                 <Globe className="w-4 h-4 text-green-500" />
                 <span className="text-sm font-medium text-gray-700">{t('common.language')}</span>
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2 mb-2">
                 <button
                   onClick={() => setLanguage('ENG')}
-                  className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                  className={`px-3 py-2 text-sm rounded-md transition-colors ${
                     language === 'ENG' 
                       ? 'text-green-700 bg-green-50 border border-green-200' 
                       : 'text-gray-700 bg-gray-50 hover:bg-green-50 hover:text-green-700'
@@ -219,7 +219,7 @@ export const PublicNavigation: React.FC = () => {
                 </button>
                 <button
                   onClick={() => setLanguage('தமிழ்')}
-                  className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                  className={`px-3 py-2 text-sm rounded-md transition-colors ${
                     language === 'தமிழ்' 
                       ? 'text-green-700 bg-green-50 border border-green-200' 
                       : 'text-gray-700 bg-gray-50 hover:bg-green-50 hover:text-green-700'
@@ -227,9 +227,11 @@ export const PublicNavigation: React.FC = () => {
                 >
                   தமிழ்
                 </button>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => setLanguage('മലയാളം')}
-                  className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                  className={`px-3 py-2 text-sm rounded-md transition-colors ${
                     language === 'മലയാളം' 
                       ? 'text-green-700 bg-green-50 border border-green-200' 
                       : 'text-gray-700 bg-gray-50 hover:bg-green-50 hover:text-green-700'
@@ -239,10 +241,10 @@ export const PublicNavigation: React.FC = () => {
                 </button>
                 <button
                   onClick={() => setLanguage('हिंदी')}
-                  className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                  className={`px-3 py-2 text-sm rounded-md transition-colors ${
                     language === 'हिंदी' 
                       ? 'text-green-700 bg-green-50 border border-green-200' 
-                      : 'text-gray-700 bg-gray-50 hover:bg-green-50 hover:text-green-700'
+                      : 'text-gray-700 bg-gray-50 hover:text-green-700'
                   }`}
                 >
                   हिंदी
