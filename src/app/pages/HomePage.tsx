@@ -332,10 +332,25 @@ export const HomePage: React.FC = () => {
           right: -3rem;
         }
 
-        /* Mobile carousel navigation */
+        /* Mobile carousel navigation - Always visible on mobile */
         @media (max-width: 640px) {
           .management-carousel .carousel-navigation {
-            display: none;
+            display: flex !important;
+            width: 2rem;
+            height: 2rem;
+          }
+          
+          .management-carousel .carousel-navigation.prev {
+            left: -2rem;
+          }
+
+          .management-carousel .carousel-navigation.next {
+            right: -2rem;
+          }
+          
+          /* Ensure mobile carousel has proper spacing for arrows */
+          .management-carousel {
+            margin: 0 2.5rem;
           }
         }
 
@@ -635,9 +650,9 @@ export const HomePage: React.FC = () => {
               ))}
             </div>
           ) : managementMembers.length > 0 ? (
-            managementMembers.length > 4 ? (
-              // Carousel for more than 4 members
-              <div className="management-carousel relative">
+            <>
+              {/* Mobile Carousel - Always show carousel with navigation arrows on mobile */}
+              <div className="management-carousel relative block sm:hidden">
                 <Carousel
                   opts={{
                     align: "start",
@@ -646,9 +661,9 @@ export const HomePage: React.FC = () => {
                   }}
                   className="w-full"
                 >
-                  <CarouselContent className="-ml-2 md:-ml-4">
+                  <CarouselContent className="-ml-2">
                     {managementMembers.map((member, index) => (
-                      <CarouselItem key={member.id} className="carousel-item pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/4">
+                      <CarouselItem key={member.id} className="carousel-item pl-2 basis-full">
                         <Card className={`management-card border-0 hover:shadow-lg premium-card-hover ${isVisible ? `premium-fadeInUp premium-stagger-${(index % 4) + 2}` : 'opacity-0'}`}>
                           {getImageUrl(member.image_url) ? (
                             <img
@@ -679,44 +694,98 @@ export const HomePage: React.FC = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="carousel-navigation prev hidden sm:flex -left-12 bg-white border-green-200 hover:bg-green-50 hover:border-green-300 text-green-700 shadow-lg" />
-                  <CarouselNext className="carousel-navigation next hidden sm:flex -right-12 bg-white border-green-200 hover:bg-green-50 hover:border-green-300 text-green-700 shadow-lg" />
+                  {/* Mobile Navigation Arrows - Always visible on mobile */}
+                  <CarouselPrevious className="carousel-navigation prev -left-8 bg-white border-green-200 hover:bg-green-50 hover:border-green-300 text-green-700 shadow-lg w-8 h-8" />
+                  <CarouselNext className="carousel-navigation next -right-8 bg-white border-green-200 hover:bg-green-50 hover:border-green-300 text-green-700 shadow-lg w-8 h-8" />
                 </Carousel>
               </div>
-            ) : (
-              // Grid for 4 or fewer members
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {managementMembers.map((member, index) => (
-                  <Card key={member.id} className={`border-0 hover:shadow-lg transition-all duration-300 hover:-translate-y-2 premium-card-hover ${isVisible ? `premium-fadeInUp premium-stagger-${index + 2}` : 'opacity-0'}`}>
-                    {getImageUrl(member.image_url) ? (
-                      <img
-                        src={getImageUrl(member.image_url)!}
-                        alt={member.name}
-                        className="w-full h-56 object-cover rounded-t-lg"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                          const placeholder = target.nextElementSibling as HTMLElement;
-                          if (placeholder) placeholder.style.display = 'flex';
-                        }}
-                      />
-                    ) : null}
-                    <div 
-                      className={`w-full h-56 bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center rounded-t-lg ${getImageUrl(member.image_url) ? 'hidden' : 'flex'}`}
+
+              {/* Desktop Layout - Grid or Carousel based on member count */}
+              <div className="hidden sm:block">
+                {managementMembers.length > 4 ? (
+                  // Carousel for more than 4 members on desktop
+                  <div className="management-carousel relative">
+                    <Carousel
+                      opts={{
+                        align: "start",
+                        loop: true,
+                        slidesToScroll: 1,
+                      }}
+                      className="w-full"
                     >
-                      <Users className="w-16 h-16 text-green-400" />
-                    </div>
-                    <CardContent className="pt-4">
-                      <h3 className="font-semibold text-lg">{member.name}</h3>
-                      <p className="text-sm text-gray-500 mb-3">{member.position}</p>
-                      <p className="text-sm text-gray-600">
-                        {(member.description || `${member.name} serves as ${member.position}, contributing to the spiritual and administrative leadership of our parish community.`).replace(/\s*\[UPDATED\]/g, '')}
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
+                      <CarouselContent className="-ml-4">
+                        {managementMembers.map((member, index) => (
+                          <CarouselItem key={member.id} className="carousel-item pl-4 basis-1/2 lg:basis-1/4">
+                            <Card className={`management-card border-0 hover:shadow-lg premium-card-hover ${isVisible ? `premium-fadeInUp premium-stagger-${(index % 4) + 2}` : 'opacity-0'}`}>
+                              {getImageUrl(member.image_url) ? (
+                                <img
+                                  src={getImageUrl(member.image_url)!}
+                                  alt={member.name}
+                                  className="w-full h-56 object-cover rounded-t-lg"
+                                  onError={(e) => {
+                                    const target = e.target as HTMLImageElement;
+                                    target.style.display = 'none';
+                                    const placeholder = target.nextElementSibling as HTMLElement;
+                                    if (placeholder) placeholder.style.display = 'flex';
+                                  }}
+                                />
+                              ) : null}
+                              <div 
+                                className={`w-full h-56 bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center rounded-t-lg ${getImageUrl(member.image_url) ? 'hidden' : 'flex'}`}
+                              >
+                                <Users className="w-16 h-16 text-green-400" />
+                              </div>
+                              <CardContent className="card-content pt-4">
+                                <h3 className="font-semibold text-lg">{member.name}</h3>
+                                <p className="text-sm text-gray-500 mb-3">{member.position}</p>
+                                <p className="text-sm text-gray-600">
+                                  {(member.description || `${member.name} serves as ${member.position}, contributing to the spiritual and administrative leadership of our parish community.`).replace(/\s*\[UPDATED\]/g, '')}
+                                </p>
+                              </CardContent>
+                            </Card>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <CarouselPrevious className="carousel-navigation prev -left-12 bg-white border-green-200 hover:bg-green-50 hover:border-green-300 text-green-700 shadow-lg" />
+                      <CarouselNext className="carousel-navigation next -right-12 bg-white border-green-200 hover:bg-green-50 hover:border-green-300 text-green-700 shadow-lg" />
+                    </Carousel>
+                  </div>
+                ) : (
+                  // Grid for 4 or fewer members on desktop
+                  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    {managementMembers.map((member, index) => (
+                      <Card key={member.id} className={`border-0 hover:shadow-lg transition-all duration-300 hover:-translate-y-2 premium-card-hover ${isVisible ? `premium-fadeInUp premium-stagger-${index + 2}` : 'opacity-0'}`}>
+                        {getImageUrl(member.image_url) ? (
+                          <img
+                            src={getImageUrl(member.image_url)!}
+                            alt={member.name}
+                            className="w-full h-56 object-cover rounded-t-lg"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              const placeholder = target.nextElementSibling as HTMLElement;
+                              if (placeholder) placeholder.style.display = 'flex';
+                            }}
+                          />
+                        ) : null}
+                        <div 
+                          className={`w-full h-56 bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center rounded-t-lg ${getImageUrl(member.image_url) ? 'hidden' : 'flex'}`}
+                        >
+                          <Users className="w-16 h-16 text-green-400" />
+                        </div>
+                        <CardContent className="pt-4">
+                          <h3 className="font-semibold text-lg">{member.name}</h3>
+                          <p className="text-sm text-gray-500 mb-3">{member.position}</p>
+                          <p className="text-sm text-gray-600">
+                            {(member.description || `${member.name} serves as ${member.position}, contributing to the spiritual and administrative leadership of our parish community.`).replace(/\s*\[UPDATED\]/g, '')}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
               </div>
-            )
+            </>
           ) : (
             <div className="text-center py-12">
               <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
