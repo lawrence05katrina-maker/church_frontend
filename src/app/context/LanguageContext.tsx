@@ -1846,6 +1846,19 @@ const translations = {
     'testimonies.share.title': 'Condividi la Tua Testimonianza',
     'testimonies.share.button': 'Condividi Testimonianza',
     
+    // Rooms & Accommodation Page
+    'accommodation.title': 'Camere e Alloggio',
+    'accommodation.pilgrim.rooms': 'Camere per Pellegrini',
+    'accommodation.pilgrim.desc': 'Alloggio semplice e pulito per i pellegrini.',
+    'accommodation.family.rooms': 'Camere Familiari',
+    'accommodation.family.desc': 'Camere confortevoli e sicure per le famiglie.',
+    'accommodation.group.stay': 'Soggiorno di Gruppo',
+    'accommodation.group.desc': 'Alloggio per gruppi di pellegrini.',
+    'accommodation.affordable.rooms': 'Camere Economiche',
+    'accommodation.affordable.desc': 'Alloggio conveniente per tutti i devoti.',
+    'accommodation.enquiries': 'Richieste di Alloggio',
+    'accommodation.contact.desc': 'Si prega di contattare per la disponibilità delle camere',
+    
     // Footer
     'footer.shrine.name': 'Santuario della Madonna Addolorata',
     'footer.shrine.description': 'Un luogo sacro di preghiera e pellegrinaggio dedicato a San Devasahayam',
@@ -1984,6 +1997,19 @@ const translations = {
     'testimonies.loading': 'Zeugnisse werden geladen...',
     'testimonies.share.title': 'Teilen Sie Ihr Zeugnis',
     'testimonies.share.button': 'Zeugnis Teilen',
+    
+    // Rooms & Accommodation Page
+    'accommodation.title': 'Zimmer und Unterkunft',
+    'accommodation.pilgrim.rooms': 'Pilgerzimmer',
+    'accommodation.pilgrim.desc': 'Einfache und saubere Unterkunft für Pilger.',
+    'accommodation.family.rooms': 'Familienzimmer',
+    'accommodation.family.desc': 'Komfortable und sichere Zimmer für Familien.',
+    'accommodation.group.stay': 'Gruppenaufenthalt',
+    'accommodation.group.desc': 'Unterkunft für Pilgergruppen.',
+    'accommodation.affordable.rooms': 'Günstige Zimmer',
+    'accommodation.affordable.desc': 'Erschwingliche Unterkunft für alle Gläubigen.',
+    'accommodation.enquiries': 'Unterkunftsanfragen',
+    'accommodation.contact.desc': 'Bitte kontaktieren Sie uns für Zimmerverfügbarkeit',
     
     // Footer
     'footer.shrine.name': 'Heiligtum Unserer Lieben Frau der Schmerzen',
