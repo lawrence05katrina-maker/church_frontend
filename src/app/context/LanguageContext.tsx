@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-export type Language = 'ENG' | 'தமிழ்' | 'മലയാളം' | 'हिंदी';
+export type Language = 'ENG' | 'தமிழ்' | 'മലയാളം' | 'हिंदी' | 'Italiano' | 'Deutsch';
 
 interface LanguageContextType {
   language: Language;
@@ -1716,6 +1716,284 @@ const translations = {
     'footer.email': 'info@devasahayammountshrine.com',
     'footer.follow.us': 'हमें फॉलो करें',
     'footer.copyright': '© 2026 दुःखों की माता मरियम का मंदिर। सभी अधिकार सुरक्षित।',
+  },
+  'Italiano': {
+    // Hero Section
+    'hero.title1': 'Santuario della Madonna Addolorata',
+    'hero.title2': 'Luogo del Martirio di San Devasahayam',
+    'hero.subtitle': 'Un Luogo Sacro di Preghiera e Pellegrinaggio dedicato a San Devasahayam',
+    
+    // Shrine Name
+    'shrine.name': 'Santuario della Madonna Addolorata',
+    
+    // Navigation
+    'nav.home': 'Home',
+    'nav.about': 'Chi Siamo',
+    'nav.massBooking': 'Prenotazione Messa',
+    'nav.donations': 'Donazioni',
+    'nav.gallery': 'Galleria',
+    'nav.livestream': 'Diretta Streaming',
+    'nav.testimonies': 'Testimonianze',
+    'nav.prayerRequest': 'Richiesta di Preghiera',
+    'nav.contact': 'Contatti',
+    
+    // Buttons
+    'button.bookMass': 'Prenota una Messa',
+    'button.donate': 'Fai una Donazione',
+    'button.prayerRequest': 'Richiesta di Preghiera',
+    'button.learnMore': 'Scopri di Più',
+    'button.viewMore': 'Vedi Altro...',
+    
+    // About Section
+    'about.title': 'Su San Devasahayam',
+    'about.description': 'Benvenuti al Luogo del Martirio di San Devasahayam, un santuario benedetto dedicato a San Devasahayam, il primo laico indiano ad essere canonizzato dalla Chiesa Cattolica.',
+    
+    // Management Section
+    'management.title': 'Gestione',
+    
+    // Announcements Section
+    'announcements.title': 'Annunci Importanti',
+    'announcements.feast.title': 'Celebrazione Annuale della Festa',
+    'announcements.feast.content': 'Unitevi a noi per la grande celebrazione della Festa di San Devasahayam il 14 gennaio 2025. Messe speciali durante tutta la giornata.',
+    
+    // Call to Action Cards
+    'cta.bookMass.title': 'Prenota una Messa',
+    'cta.bookMass.description': 'Prenota una santa messa per le tue intenzioni e i tuoi cari',
+    'cta.donation.title': 'Fai una Donazione',
+    'cta.donation.description': 'Sostieni il santuario e le sue opere di carità',
+    'cta.prayer.title': 'Richiesta di Preghiera',
+    'cta.prayer.description': 'Invia la tua richiesta di preghiera per essere ricordato nelle nostre preghiere',
+    
+    // Common
+    'common.language': 'Lingua',
+    'common.welcome': 'Benvenuti nella nostra casa spirituale',
+    
+    // About Page
+    'about.page.title': 'San Devasahayam',
+    'about.page.subtitle': 'Primo Santo Laico dell\'India | Martire della Fede | 1712 - 1752',
+    'about.statue.title': 'Statua di San Devasahayam',
+    'about.life.title': 'Una Vita di Fede e Coraggio',
+    'about.life.description': 'Nato come Neelakanta in una famiglia indù benestante nel 1712, Devasahayam divenne il primo laico indiano ad essere canonizzato come santo da Papa Francesco il 15 maggio 2022.',
+    'about.journey.description': 'Il suo viaggio da funzionario di palazzo a martire cristiano testimonia una fede incrollabile e dignità di fronte alla persecuzione.',
+    
+    // Mass Booking Page
+    'mass.booking.title': 'Prenota una Santa Messa',
+    'mass.booking.subtitle': 'Offri una Santa Messa per le tue intenzioni, i tuoi cari o in memoria delle anime defunte.',
+    'mass.booking.details': 'Dettagli della Prenotazione',
+    'mass.booking.fullName': 'Nome Completo',
+    'mass.booking.email': 'Indirizzo Email',
+    'mass.booking.phone': 'Numero di Telefono',
+    'mass.booking.date': 'Data Preferita',
+    'mass.booking.time': 'Orario Preferito',
+    'mass.booking.intentionType': 'Tipo di Intenzione della Messa',
+    'mass.booking.intentionDetails': 'Dettagli dell\'Intenzione della Messa',
+    'mass.booking.numberOfDays': 'Numero di Giorni',
+    'mass.booking.submit': 'Invia Richiesta di Prenotazione',
+    'mass.booking.amount': 'Importo della Prenotazione Messa',
+    'mass.booking.thanksgiving': 'Ringraziamento',
+    'mass.booking.petition': 'Petizione',
+    'mass.booking.memorial': 'Memoriale',
+    
+    // Payment
+    'payment.confirmation.required': 'Conferma di Pagamento Richiesta',
+    'payment.complete': 'Completa il Tuo Pagamento',
+    'payment.amount': 'Importo',
+    
+    // Donations Page
+    'donations.title': 'Fai una Donazione',
+    'donations.subtitle': 'Le tue donazioni sincere aiutano a mantenere il santuario, sostenere attività caritative e promuovere servizi comunitari.',
+    'donations.details': 'Dettagli della Donazione',
+    'donations.fullName': 'Il Tuo Nome',
+    'donations.email': 'Indirizzo Email (Opzionale)',
+    'donations.phone': 'Numero di Telefono (Opzionale)',
+    'donations.purpose': 'Seleziona lo scopo della donazione',
+    'donations.amount': 'Seleziona importo',
+    'donations.proceed': 'Procedi alla Donazione',
+    
+    // Gallery Page
+    'gallery.title': 'Galleria Sacra',
+    'gallery.subtitle': 'Testimonia i momenti divini e i ricordi sacri del nostro amato santuario',
+    'gallery.all': 'Tutti',
+    'gallery.photos': 'Foto',
+    'gallery.videos': 'Video',
+    
+    // Live Stream Page
+    'livestream.title': 'Diretta Messa',
+    'livestream.subtitle': 'Unisciti a noi per la diretta streaming della Santa Messa e delle cerimonie speciali',
+    'livestream.live.now': 'IN DIRETTA ORA',
+    'livestream.watching': 'guardando',
+    
+    // Prayer Request Page
+    'prayer.request.title': 'Richiesta di Preghiera',
+    'prayer.request.subtitle': 'Condividi le tue intenzioni di preghiera con noi. Ti ricorderemo nelle nostre messe e preghiere quotidiane.',
+    'prayer.request.name': 'Il Tuo Nome',
+    'prayer.request.email': 'Indirizzo Email (Opzionale)',
+    'prayer.request.intention': 'La Tua Intenzione di Preghiera',
+    'prayer.request.submit': 'Invia Richiesta di Preghiera',
+    
+    // Contact Page
+    'contact.title': 'Contattaci',
+    'contact.subtitle': 'Visitaci, chiamaci o contattaci per qualsiasi informazione. Siamo qui per servirti.',
+    'contact.address': 'Indirizzo',
+    'contact.phone': 'Telefono',
+    'contact.email': 'Email',
+    'contact.get.directions': 'Ottieni Indicazioni',
+    
+    // Testimonies Page
+    'testimonies.title': 'Miracoli e Testimonianze',
+    'testimonies.subtitle': 'Leggi storie ispiratrici di fede e preghiere esaudite attraverso San Devasahayam.',
+    'testimonies.loading': 'Caricamento testimonianze...',
+    'testimonies.share.title': 'Condividi la Tua Testimonianza',
+    'testimonies.share.button': 'Condividi Testimonianza',
+    
+    // Footer
+    'footer.shrine.name': 'Santuario della Madonna Addolorata',
+    'footer.shrine.description': 'Un luogo sacro di preghiera e pellegrinaggio dedicato a San Devasahayam',
+    'footer.contact.us': 'Contattaci',
+    'footer.address': 'Monte Devasahayam, Strada del Pellegrinaggio, Tamil Nadu, India',
+    'footer.phone': '+91 89037 60869',
+    'footer.email': 'info@devasahayammountshrine.com',
+    'footer.follow.us': 'Seguici',
+    'footer.copyright': '© 2026 Santuario della Madonna Addolorata. Tutti i diritti riservati.',
+  },
+  'Deutsch': {
+    // Hero Section
+    'hero.title1': 'Heiligtum Unserer Lieben Frau der Schmerzen',
+    'hero.title2': 'Martyriumsstätte des Heiligen Devasahayam',
+    'hero.subtitle': 'Ein Heiliger Ort des Gebets und der Pilgerfahrt, dem Heiligen Devasahayam gewidmet',
+    
+    // Shrine Name
+    'shrine.name': 'Heiligtum Unserer Lieben Frau der Schmerzen',
+    
+    // Navigation
+    'nav.home': 'Startseite',
+    'nav.about': 'Über Uns',
+    'nav.massBooking': 'Messebuchung',
+    'nav.donations': 'Spenden',
+    'nav.gallery': 'Galerie',
+    'nav.livestream': 'Live-Stream',
+    'nav.testimonies': 'Zeugnisse',
+    'nav.prayerRequest': 'Gebetsanliegen',
+    'nav.contact': 'Kontakt',
+    
+    // Buttons
+    'button.bookMass': 'Messe Buchen',
+    'button.donate': 'Spenden',
+    'button.prayerRequest': 'Gebetsanliegen',
+    'button.learnMore': 'Mehr Erfahren',
+    'button.viewMore': 'Mehr Anzeigen...',
+    
+    // About Section
+    'about.title': 'Über den Heiligen Devasahayam',
+    'about.description': 'Willkommen an der Martyriumsstätte des Heiligen Devasahayam, einem gesegneten Heiligtum, das dem Heiligen Devasahayam gewidmet ist, dem ersten indischen Laien, der von der katholischen Kirche heiliggesprochen wurde.',
+    
+    // Management Section
+    'management.title': 'Verwaltung',
+    
+    // Announcements Section
+    'announcements.title': 'Wichtige Ankündigungen',
+    'announcements.feast.title': 'Jährliche Festtagsfeier',
+    'announcements.feast.content': 'Begleiten Sie uns zur großen Feier des Festtags des Heiligen Devasahayam am 14. Januar 2025. Besondere Messen den ganzen Tag über.',
+    
+    // Call to Action Cards
+    'cta.bookMass.title': 'Messe Buchen',
+    'cta.bookMass.description': 'Buchen Sie eine heilige Messe für Ihre Anliegen und Ihre Lieben',
+    'cta.donation.title': 'Spenden',
+    'cta.donation.description': 'Unterstützen Sie das Heiligtum und seine karitativen Werke',
+    'cta.prayer.title': 'Gebetsanliegen',
+    'cta.prayer.description': 'Reichen Sie Ihr Gebetsanliegen ein, um in unseren Gebeten erinnert zu werden',
+    
+    // Common
+    'common.language': 'Sprache',
+    'common.welcome': 'Willkommen in unserem spirituellen Zuhause',
+    
+    // About Page
+    'about.page.title': 'Heiliger Devasahayam',
+    'about.page.subtitle': 'Indiens Erster Laien-Heiliger | Märtyrer des Glaubens | 1712 - 1752',
+    'about.statue.title': 'Statue des Heiligen Devasahayam',
+    'about.life.title': 'Ein Leben des Glaubens und Mutes',
+    'about.life.description': 'Geboren als Neelakanta in eine wohlhabende hinduistische Familie im Jahr 1712, wurde Devasahayam der erste indische Laie, der von Papst Franziskus am 15. Mai 2022 heiliggesprochen wurde.',
+    'about.journey.description': 'Seine Reise von einem Palastbeamten zu einem christlichen Märtyrer zeugt von unerschütterlichem Glauben und Würde angesichts der Verfolgung.',
+    
+    // Mass Booking Page
+    'mass.booking.title': 'Heilige Messe Buchen',
+    'mass.booking.subtitle': 'Opfern Sie eine Heilige Messe für Ihre Anliegen, Ihre Lieben oder zum Gedenken an verstorbene Seelen.',
+    'mass.booking.details': 'Buchungsdetails',
+    'mass.booking.fullName': 'Vollständiger Name',
+    'mass.booking.email': 'E-Mail-Adresse',
+    'mass.booking.phone': 'Telefonnummer',
+    'mass.booking.date': 'Bevorzugtes Datum',
+    'mass.booking.time': 'Bevorzugte Uhrzeit',
+    'mass.booking.intentionType': 'Art des Messanliegens',
+    'mass.booking.intentionDetails': 'Details des Messanliegens',
+    'mass.booking.numberOfDays': 'Anzahl der Tage',
+    'mass.booking.submit': 'Buchungsanfrage Senden',
+    'mass.booking.amount': 'Messbuchungsbetrag',
+    'mass.booking.thanksgiving': 'Danksagung',
+    'mass.booking.petition': 'Bitte',
+    'mass.booking.memorial': 'Gedenkgottesdienst',
+    
+    // Payment
+    'payment.confirmation.required': 'Zahlungsbestätigung Erforderlich',
+    'payment.complete': 'Schließen Sie Ihre Zahlung Ab',
+    'payment.amount': 'Betrag',
+    
+    // Donations Page
+    'donations.title': 'Spenden',
+    'donations.subtitle': 'Ihre herzlichen Spenden helfen, das Heiligtum zu erhalten, karitative Aktivitäten zu unterstützen und Gemeinschaftsdienste voranzutreiben.',
+    'donations.details': 'Spendendetails',
+    'donations.fullName': 'Ihr Name',
+    'donations.email': 'E-Mail-Adresse (Optional)',
+    'donations.phone': 'Telefonnummer (Optional)',
+    'donations.purpose': 'Spendenzweck Auswählen',
+    'donations.amount': 'Betrag Auswählen',
+    'donations.proceed': 'Zur Spende Fortfahren',
+    
+    // Gallery Page
+    'gallery.title': 'Heilige Galerie',
+    'gallery.subtitle': 'Erleben Sie die göttlichen Momente und heiligen Erinnerungen unseres geliebten Heiligtums',
+    'gallery.all': 'Alle',
+    'gallery.photos': 'Fotos',
+    'gallery.videos': 'Videos',
+    
+    // Live Stream Page
+    'livestream.title': 'Live-Messe-Stream',
+    'livestream.subtitle': 'Begleiten Sie uns beim Live-Streaming der Heiligen Messe und besonderer Zeremonien',
+    'livestream.live.now': 'JETZT LIVE',
+    'livestream.watching': 'schauen zu',
+    
+    // Prayer Request Page
+    'prayer.request.title': 'Gebetsanliegen',
+    'prayer.request.subtitle': 'Teilen Sie Ihre Gebetsanliegen mit uns. Wir werden Sie in unseren täglichen Messen und Gebeten gedenken.',
+    'prayer.request.name': 'Ihr Name',
+    'prayer.request.email': 'E-Mail-Adresse (Optional)',
+    'prayer.request.intention': 'Ihr Gebetsanliegen',
+    'prayer.request.submit': 'Gebetsanliegen Senden',
+    
+    // Contact Page
+    'contact.title': 'Kontaktieren Sie Uns',
+    'contact.subtitle': 'Besuchen Sie uns, rufen Sie uns an oder kontaktieren Sie uns für alle Anfragen. Wir sind hier, um Ihnen zu dienen.',
+    'contact.address': 'Adresse',
+    'contact.phone': 'Telefon',
+    'contact.email': 'E-Mail',
+    'contact.get.directions': 'Wegbeschreibung Erhalten',
+    
+    // Testimonies Page
+    'testimonies.title': 'Wunder und Zeugnisse',
+    'testimonies.subtitle': 'Lesen Sie inspirierende Geschichten des Glaubens und erhörter Gebete durch den Heiligen Devasahayam.',
+    'testimonies.loading': 'Zeugnisse werden geladen...',
+    'testimonies.share.title': 'Teilen Sie Ihr Zeugnis',
+    'testimonies.share.button': 'Zeugnis Teilen',
+    
+    // Footer
+    'footer.shrine.name': 'Heiligtum Unserer Lieben Frau der Schmerzen',
+    'footer.shrine.description': 'Ein heiliger Ort des Gebets und der Pilgerfahrt, dem Heiligen Devasahayam gewidmet',
+    'footer.contact.us': 'Kontaktieren Sie Uns',
+    'footer.address': 'Berg Devasahayam, Pilgerstraße, Tamil Nadu, Indien',
+    'footer.phone': '+91 89037 60869',
+    'footer.email': 'info@devasahayammountshrine.com',
+    'footer.follow.us': 'Folgen Sie Uns',
+    'footer.copyright': '© 2026 Heiligtum Unserer Lieben Frau der Schmerzen. Alle Rechte vorbehalten.',
   }
 };
 
@@ -1727,7 +2005,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const [language, setLanguage] = useState<Language>(() => {
     // Get language from localStorage or default to 'ENG'
     const savedLanguage = localStorage.getItem('shrine-language');
-    const validLanguages: Language[] = ['ENG', 'தமிழ்', 'മലയാളം', 'हिंदी'];
+    const validLanguages: Language[] = ['ENG', 'தமிழ்', 'മലയാളം', 'हिंदी', 'Italiano', 'Deutsch'];
     
     // Check if saved language is valid
     if (savedLanguage && validLanguages.includes(savedLanguage as Language)) {

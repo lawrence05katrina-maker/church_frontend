@@ -146,6 +146,28 @@ export const PublicNavigation: React.FC = () => {
                   >
                     हिंदी
                   </button>
+                  <button
+                    onClick={() => {
+                      setLanguage('Italiano');
+                      setLanguageDropdownOpen(false);
+                    }}
+                    className={`block w-full px-3 py-2 text-sm text-left hover:bg-green-50 hover:text-green-700 transition-colors ${
+                      language === 'Italiano' ? 'text-green-700 bg-green-50' : 'text-gray-700'
+                    }`}
+                  >
+                    Italiano
+                  </button>
+                  <button
+                    onClick={() => {
+                      setLanguage('Deutsch');
+                      setLanguageDropdownOpen(false);
+                    }}
+                    className={`block w-full px-3 py-2 text-sm text-left hover:bg-green-50 hover:text-green-700 transition-colors ${
+                      language === 'Deutsch' ? 'text-green-700 bg-green-50' : 'text-gray-700'
+                    }`}
+                  >
+                    Deutsch
+                  </button>
                 </div>
               )}
             </div>
@@ -247,6 +269,28 @@ export const PublicNavigation: React.FC = () => {
                   }`}
                 >
                   हिंदी
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-2 mt-2">
+                <button
+                  onClick={() => setLanguage('Italiano')}
+                  className={`px-3 py-2 text-sm rounded-md transition-colors ${
+                    language === 'Italiano' 
+                      ? 'text-green-700 bg-green-50 border border-green-200' 
+                      : 'text-gray-700 bg-gray-50 hover:bg-green-50 hover:text-green-700'
+                  }`}
+                >
+                  Italiano
+                </button>
+                <button
+                  onClick={() => setLanguage('Deutsch')}
+                  className={`px-3 py-2 text-sm rounded-md transition-colors ${
+                    language === 'Deutsch' 
+                      ? 'text-green-700 bg-green-50 border border-green-200' 
+                      : 'text-gray-700 bg-gray-50 hover:text-green-700'
+                  }`}
+                >
+                  Deutsch
                 </button>
               </div>
             </div>
