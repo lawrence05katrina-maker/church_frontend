@@ -48,7 +48,14 @@ export const PrayerRequestPage: React.FC = () => {
   }
 
   try {
-    await createPrayer(formData);
+    // Send 'prayer' field to match database column
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      prayer: formData.prayer
+    };
+    
+    await createPrayer(payload);
 
     toast.success("Prayer request submitted successfully!");
     setSubmitted(true);
@@ -59,6 +66,7 @@ export const PrayerRequestPage: React.FC = () => {
       prayer: "",
     });
   } catch (error) {
+    console.error('Prayer submission error:', error);
     toast.error("Failed to submit prayer. Please try again.");
   }
 };

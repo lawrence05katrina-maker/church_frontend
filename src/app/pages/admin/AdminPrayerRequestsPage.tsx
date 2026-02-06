@@ -24,10 +24,12 @@ interface PrayerRequest {
   id: number;
   name: string;
   email?: string;
-  prayer_request: string;
-  status: 'pending' | 'prayed' | 'archived';
+  phone?: string;
+  prayer: string;
+  status: string; // Can be 'pending', 'unread', 'read', 'archived'
+  is_urgent?: boolean;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
 
 export const AdminPrayerRequestsPage: React.FC = () => {
@@ -38,36 +40,31 @@ export const AdminPrayerRequestsPage: React.FC = () => {
   const [filter, setFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Mock data for now - replace with actual API calls
+  // Fetch prayer requests from API
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setPrayerRequests([
-        {
-          id: 1,
-          name: 'John Doe',
-          email: 'john@example.com',
-          prayer_request: 'Please pray for my family\'s health and well-being during these difficult times.',
-          status: 'pending',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: 2,
-          name: 'Mary Smith',
-          prayer_request: 'Seeking prayers for guidance in my career decisions and for peace in my heart.',
-          status: 'prayed',
-          created_at: new Date(Date.now() - 86400000).toISOString(),
-          updated_at: new Date().toISOString()
-        }
-      ]);
-      setLoading(false);
-    }, 1000);
+    fetchPrayerRequests();
   }, []);
 
-  const updateRequestStatus = async (id: number, status: 'pending' | 'prayed' | 'archived') => {
+  const fetchPrayerRequests = async () => {
     try {
-      // TODO: Replace with actual API call
+      setLoading(true);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/prayers`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch prayer requests');
+      }
+      const data = await response.json();
+      setPrayerRequests(data);
+    } catch (error) {
+      console.error('Error fetching prayer requests:', error);
+      toast.error('Failed to load prayer requests');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateRequestStatus = async (id: number, status: string) => {
+    try {
+      // For now, update locally - you can add a backend endpoint later
       setPrayerRequests(prev => 
         prev.map(request => 
           request.id === id 
@@ -77,17 +74,26 @@ export const AdminPrayerRequestsPage: React.FC = () => {
       );
       toast.success(`Prayer request marked as ${status}`);
     } catch (error) {
+      console.error('Error updating prayer request:', error);
       toast.error('Failed to update prayer request status');
     }
   };
 
   const deleteRequest = async (id: number) => {
     try {
-      // TODO: Replace with actual API call
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/prayers/${id}`, {
+        method: 'DELETE'
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete prayer request');
+      }
+      
       setPrayerRequests(prev => prev.filter(request => request.id !== id));
       setDeleteConfirm(null);
       toast.success('Prayer request deleted successfully');
     } catch (error) {
+      console.error('Error deleting prayer request:', error);
       toast.error('Failed to delete prayer request');
     }
   };
@@ -95,14 +101,15 @@ export const AdminPrayerRequestsPage: React.FC = () => {
   const filteredRequests = prayerRequests.filter(request => {
     const matchesFilter = filter === 'all' || request.status === filter;
     const matchesSearch = request.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.prayer_request.toLowerCase().includes(searchTerm.toLowerCase());
+                         request.prayer.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'prayed': return 'bg-green-100 text-green-800';
+      case 'pending':
+      case 'unread': return 'bg-yellow-100 text-yellow-800';
+      case 'read': return 'bg-green-100 text-green-800';
       case 'archived': return 'bg-gray-100 text-gray-800';
       default: return 'bg-gray-100 text-gray-800';
     }
@@ -110,8 +117,9 @@ export const AdminPrayerRequestsPage: React.FC = () => {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'pending': return <Clock className="w-4 h-4" />;
-      case 'prayed': return <CheckCircle className="w-4 h-4" />;
+      case 'pending':
+      case 'unread': return <Clock className="w-4 h-4" />;
+      case 'read': return <CheckCircle className="w-4 h-4" />;
       case 'archived': return <XCircle className="w-4 h-4" />;
       default: return <Clock className="w-4 h-4" />;
     }
@@ -154,7 +162,7 @@ export const AdminPrayerRequestsPage: React.FC = () => {
                 <div>
                   <p className="text-xs sm:text-sm text-gray-600">Pending</p>
                   <p className="text-lg sm:text-2xl font-bold text-yellow-600">
-                    {prayerRequests.filter(r => r.status === 'pending').length}
+                    {prayerRequests.filter(r => r.status === 'pending' || r.status === 'unread').length}
                   </p>
                 </div>
                 <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-600" />
@@ -166,9 +174,9 @@ export const AdminPrayerRequestsPage: React.FC = () => {
             <CardContent className="pt-4 sm:pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm text-gray-600">Prayed For</p>
+                  <p className="text-xs sm:text-sm text-gray-600">Read</p>
                   <p className="text-lg sm:text-2xl font-bold text-green-600">
-                    {prayerRequests.filter(r => r.status === 'prayed').length}
+                    {prayerRequests.filter(r => r.status === 'read').length}
                   </p>
                 </div>
                 <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
@@ -217,7 +225,8 @@ export const AdminPrayerRequestsPage: React.FC = () => {
                   <SelectContent>
                     <SelectItem value="all">All Status</SelectItem>
                     <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="prayed">Prayed For</SelectItem>
+                    <SelectItem value="unread">Unread</SelectItem>
+                    <SelectItem value="read">Read</SelectItem>
                     <SelectItem value="archived">Archived</SelectItem>
                   </SelectContent>
                 </Select>
@@ -249,9 +258,9 @@ export const AdminPrayerRequestsPage: React.FC = () => {
                     
                     <div className="mb-3">
                       <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-                        {request.prayer_request.length > 150 
-                          ? `${request.prayer_request.substring(0, 150)}...`
-                          : request.prayer_request
+                        {request.prayer.length > 150 
+                          ? `${request.prayer.substring(0, 150)}...`
+                          : request.prayer
                         }
                       </p>
                     </div>
@@ -273,19 +282,19 @@ export const AdminPrayerRequestsPage: React.FC = () => {
                       <span className="hidden sm:inline">View</span>
                     </Button>
                     
-                    {request.status === 'pending' && (
+                    {(request.status === 'unread' || request.status === 'pending') && (
                       <Button
                         size="sm"
-                        onClick={() => updateRequestStatus(request.id, 'prayed')}
+                        onClick={() => updateRequestStatus(request.id, 'read')}
                         className="bg-green-700 hover:bg-green-800 text-xs sm:text-sm flex-1 sm:flex-none"
                       >
                         <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-1" />
-                        <span className="hidden sm:inline">Mark Prayed</span>
-                        <span className="sm:hidden">Prayed</span>
+                        <span className="hidden sm:inline">Mark Read</span>
+                        <span className="sm:hidden">Read</span>
                       </Button>
                     )}
                     
-                    {request.status === 'prayed' && (
+                    {request.status === 'read' && (
                       <Button
                         variant="ghost"
                         size="sm"
@@ -362,7 +371,7 @@ export const AdminPrayerRequestsPage: React.FC = () => {
                 <div>
                   <label className="text-sm font-medium text-gray-700">Prayer Request</label>
                   <p className="text-gray-900 mt-1 p-3 bg-gray-50 rounded-lg leading-relaxed text-sm sm:text-base">
-                    {selectedRequest.prayer_request}
+                    {selectedRequest.prayer}
                   </p>
                 </div>
 
@@ -378,20 +387,20 @@ export const AdminPrayerRequestsPage: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-2 pt-4">
-                  {selectedRequest.status === 'pending' && (
+                  {(selectedRequest.status === 'unread' || selectedRequest.status === 'pending') && (
                     <Button
                       onClick={() => {
-                        updateRequestStatus(selectedRequest.id, 'prayed');
+                        updateRequestStatus(selectedRequest.id, 'read');
                         setSelectedRequest(null);
                       }}
                       className="bg-green-700 hover:bg-green-800 text-sm w-full sm:w-auto"
                     >
                       <CheckCircle className="w-4 h-4 mr-2" />
-                      Mark as Prayed For
+                      Mark as Read
                     </Button>
                   )}
                   
-                  {selectedRequest.status === 'prayed' && (
+                  {selectedRequest.status === 'read' && (
                     <Button
                       variant="ghost"
                       className="bg-blue-100 text-blue-700 hover:bg-blue-200 text-sm w-full sm:w-auto"

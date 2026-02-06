@@ -337,7 +337,7 @@ export const AdminAllInOnePage: React.FC = () => {
                             <p className="text-xs text-gray-600 mb-2">{request.email}</p>
                           )}
 
-                          <p className="text-sm text-gray-700">{request.prayer}</p>
+                          <p className="text-sm text-gray-700">{request.prayer_intention}</p>
 
                           <div className="flex justify-between items-center mt-3">
                             <p className="text-xs text-gray-500">
