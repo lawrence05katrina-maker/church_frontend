@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-export type Language = 'ENG' | 'தமிழ்' | 'മലയാളം' | 'हिंदी';
+export type Language = 'ENG' | 'தமிழ்';
 
 interface LanguageContextType {
   language: Language;
@@ -869,8 +869,64 @@ const translations = {
     'accommodation.affordable.desc': 'அனைவருக்கும் ஏற்ற குறைந்த செலவிலான அறைகள்.',
     'accommodation.enquiries': 'தங்கும் வசதி தொடர்பான கேள்விகள்',
     'accommodation.contact.desc': 'அறை விவரங்களுக்கு தொடர்புகொள்ளவும்',
-  },
-  'മലയാളം': {
+  }
+};
+
+interface LanguageProviderProps {
+  children: ReactNode;
+}
+
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
+  const [language, setLanguage] = useState<Language>(() => {
+    // Get language from localStorage or default to 'ENG'
+    const savedLanguage = localStorage.getItem('shrine-language');
+    const validLanguages: Language[] = ['ENG', 'தமிழ்'];
+    
+    // Check if saved language is valid
+    if (savedLanguage && validLanguages.includes(savedLanguage as Language)) {
+      return savedLanguage as Language;
+    }
+    
+    // Clear invalid language from localStorage
+    if (savedLanguage && !validLanguages.includes(savedLanguage as Language)) {
+      localStorage.removeItem('shrine-language');
+    }
+    
+    return 'ENG';
+  });
+
+  const handleSetLanguage = (lang: Language) => {
+    setLanguage(lang);
+    // Save language to localStorage
+    localStorage.setItem('shrine-language', lang);
+  };
+
+  const t = (key: string): string => {
+    // Ensure the language exists in translations
+    if (!translations[language]) {
+      console.warn(`Language ${language} not found in translations, falling back to ENG`);
+      return translations['ENG'][key] || key;
+    }
+    
+    // Try to get translation for current language, fallback to English, then return key
+    const translation = translations[language][key] || translations['ENG'][key] || key;
+    return translation;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = (): LanguageContextType => {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
+};
     // Hero Section
     'hero.title1': 'ദുഃഖമാതാവിന്റെ ആലയം',
     'hero.title2': 'വിശുദ്ധ ദേവസഹായം രക്തസാക്ഷിത്വ സ്ഥലം',
@@ -1727,7 +1783,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const [language, setLanguage] = useState<Language>(() => {
     // Get language from localStorage or default to 'ENG'
     const savedLanguage = localStorage.getItem('shrine-language');
-    const validLanguages: Language[] = ['ENG', 'தமிழ்', 'മലയാളം', 'हिंदी'];
+    const validLanguages: Language[] = ['ENG', 'தமிழ்'];
     
     // Check if saved language is valid
     if (savedLanguage && validLanguages.includes(savedLanguage as Language)) {

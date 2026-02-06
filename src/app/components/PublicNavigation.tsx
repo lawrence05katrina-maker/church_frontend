@@ -50,8 +50,7 @@ export const PublicNavigation: React.FC = () => {
               <div className="absolute inset-0 w-8 h-8 bg-green-300 rounded-full opacity-0 group-hover:opacity-20 blur-md transition-all duration-500"></div>
             </div>
             <span className={`font-semibold text-green-800 transition-all duration-300 group-hover:text-green-600 whitespace-nowrap ${
-              language === 'മലയാളം' ? 'text-sm' : 
-              language === 'தமிழ்' || language === 'हिंदी' ? 'text-base' : 
+              language === 'தமிழ்' ? 'text-base' : 
               'text-base'
             }`}>
               Our Lady Of Sorrows Shrine
@@ -65,7 +64,6 @@ export const PublicNavigation: React.FC = () => {
                 key={item.path}
                 to={item.path}
                 className={`relative px-2 py-2 font-medium transition-all duration-300 group ${
-                  language === 'മലയാളം' ? 'text-xs' : 
                   language === 'தமிழ்' ? 'text-sm' : 
                   'text-sm'
                 } ${
@@ -125,28 +123,6 @@ export const PublicNavigation: React.FC = () => {
                   >
                     தமிழ்
                   </button>
-                  <button
-                    onClick={() => {
-                      setLanguage('മലയാളം');
-                      setLanguageDropdownOpen(false);
-                    }}
-                    className={`block w-full px-3 py-2 text-sm text-left hover:bg-green-50 hover:text-green-700 transition-colors ${
-                      language === 'മലയാളം' ? 'text-green-700 bg-green-50' : 'text-gray-700'
-                    }`}
-                  >
-                    മലയാളം
-                  </button>
-                  <button
-                    onClick={() => {
-                      setLanguage('हिंदी');
-                      setLanguageDropdownOpen(false);
-                    }}
-                    className={`block w-full px-3 py-2 text-sm text-left hover:bg-green-50 hover:text-green-700 transition-colors ${
-                      language === 'हिंदी' ? 'text-green-700 bg-green-50' : 'text-gray-700'
-                    }`}
-                  >
-                    हिंदी
-                  </button>
                 </div>
               )}
             </div>
@@ -184,7 +160,6 @@ export const PublicNavigation: React.FC = () => {
                 to={item.path}
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block px-4 py-2 font-medium rounded-md transition-all duration-300 ${
-                  language === 'മലയാളം' ? 'text-sm' : 
                   language === 'தமிழ்' ? 'text-sm' : 
                   'text-sm'
                 } ${
@@ -206,7 +181,7 @@ export const PublicNavigation: React.FC = () => {
                 <Globe className="w-4 h-4 text-green-500" />
                 <span className="text-sm font-medium text-gray-700">{t('common.language')}</span>
               </div>
-              <div className="grid grid-cols-2 gap-2 mb-2">
+              <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => setLanguage('ENG')}
                   className={`px-3 py-2 text-sm rounded-md transition-colors ${
@@ -226,28 +201,6 @@ export const PublicNavigation: React.FC = () => {
                   }`}
                 >
                   தமிழ்
-                </button>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  onClick={() => setLanguage('മലയാളം')}
-                  className={`px-3 py-2 text-sm rounded-md transition-colors ${
-                    language === 'മലയാളം' 
-                      ? 'text-green-700 bg-green-50 border border-green-200' 
-                      : 'text-gray-700 bg-gray-50 hover:bg-green-50 hover:text-green-700'
-                  }`}
-                >
-                  മലയാളം
-                </button>
-                <button
-                  onClick={() => setLanguage('हिंदी')}
-                  className={`px-3 py-2 text-sm rounded-md transition-colors ${
-                    language === 'हिंदी' 
-                      ? 'text-green-700 bg-green-50 border border-green-200' 
-                      : 'text-gray-700 bg-gray-50 hover:text-green-700'
-                  }`}
-                >
-                  हिंदी
                 </button>
               </div>
             </div>
