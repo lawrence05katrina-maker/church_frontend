@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '../components/ui/carousel';
+import { Badge } from '../components/ui/badge';
 import { LivestreamNotification } from '../components/LivestreamNotification';
 import { useLanguage } from '../context/LanguageContext';
 import { getActiveAnnouncements } from '../../api/announcementApi';
@@ -683,10 +684,12 @@ export const HomePage: React.FC = () => {
                           >
                             <Users className="w-16 h-16 text-green-400" />
                           </div>
-                          <CardContent className="card-content pt-4">
-                            <h3 className="font-semibold text-lg">{member.name}</h3>
-                            <p className="text-sm text-gray-500 mb-3">{member.position}</p>
-                            <p className="text-sm text-gray-600">
+                          <CardContent className="card-content pt-4 text-center">
+                            <h3 className="font-semibold text-lg mb-2">{member.name}</h3>
+                            <Badge className="bg-green-100 text-green-800 hover:bg-green-100 mb-3 text-xs">
+                              {member.position}
+                            </Badge>
+                            <p className="text-sm text-gray-600 text-left mt-3">
                               {(member.description || `${member.name} serves as ${member.position}, contributing to the spiritual and administrative leadership of our parish community.`).replace(/\s*\[UPDATED\]/g, '')}
                             </p>
                           </CardContent>
