@@ -37,7 +37,8 @@ class AdminApi {
     try {
       const token = localStorage.getItem('shrine_admin_token');
       if (!token) {
-        throw new Error('No token found');
+        // Silently return false if no token exists (user not logged in)
+        return { success: false, message: 'No token found' };
       }
 
       const response = await axios.get(ADMIN_ENDPOINTS.VERIFY_TOKEN, {
@@ -47,15 +48,17 @@ class AdminApi {
       });
 
       if (response.data.success) {
-    
         localStorage.setItem('shrine_admin_user', JSON.stringify(response.data.data.admin));
       }
 
       return response.data;
     } catch (error) {
-      console.error('Token verification error:', error);
+      // Only log error if it's not a 401 (which is expected when not logged in)
+      if (error.response?.status !== 401) {
+        console.error('Token verification error:', error);
+      }
       this.clearAuthData();
-      throw this.handleError(error);
+      return { success: false, message: 'Token verification failed' };
     }
   }
 

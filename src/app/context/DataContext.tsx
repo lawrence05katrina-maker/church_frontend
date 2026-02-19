@@ -83,6 +83,7 @@ export interface SiteSettings {
     saintIntro: string;
   };
   socialMedia: {
+    website: string;
     facebook: string;
     youtube: string;
     instagram: string;
@@ -146,9 +147,10 @@ const defaultSettings: SiteSettings = {
     saintIntro: 'St. Devasahayam was a Hindu convert to Catholicism who was martyred for his faith in 1752. He was canonized by Pope Francis on May 15, 2022, becoming the first Indian layman to be declared a saint.',
   },
   socialMedia: {
-    facebook: 'https://facebook.com/devasahayamshrine',
-    youtube: 'https://youtube.com/@devasahayamshrine',
-    instagram: 'https://instagram.com/devasahayamshrine',
+    website: 'https://www.devasahayammountshrine.com',
+    facebook: 'https://www.facebook.com/saintdevasahayam',
+    youtube: 'https://www.youtube.com/@SaintDevasahayamShrine',
+    instagram: 'https://www.instagram.com/st.devasahayamshrine/',
   },
 };
 

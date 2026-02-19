@@ -80,6 +80,7 @@ export interface SiteContent {
   mapLng: number;
   youtubeStreamUrl: string;
   massBookingAmount: number;
+  websiteUrl: string;
   facebookUrl: string;
   youtubeUrl: string;
   instagramUrl: string;
@@ -130,9 +131,10 @@ const initialSiteContent: SiteContent = {
   mapLng: 77.5145,
   youtubeStreamUrl: 'https://www.youtube.com/embed/jfKfPfyJRdk',
   massBookingAmount: 500,
-  facebookUrl: 'https://www.facebook.com/DVmount',
-  youtubeUrl: 'https://www.youtube.com/@devasahayammountshrine5677',
-  instagramUrl: 'https://www.instagram.com/popular/devasahayam-mount/?utm_source=chatgpt.com',
+  websiteUrl: 'https://www.devasahayammountshrine.com',
+  facebookUrl: 'https://www.facebook.com/saintdevasahayam',
+  youtubeUrl: 'https://www.youtube.com/@SaintDevasahayamShrine',
+  instagramUrl: 'https://www.instagram.com/st.devasahayamshrine/',
 };
 
 const initialDonationPurposes: DonationPurpose[] = [

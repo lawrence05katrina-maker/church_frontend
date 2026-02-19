@@ -27,6 +27,12 @@ class ManagementApi {
       return response.data;
     } catch (error) {
       console.error('Error getting active management team members:', error);
+      // Return a more user-friendly error
+      if (error.code === 'ECONNABORTED') {
+        throw new Error('Request timeout - server is taking too long to respond');
+      } else if (!error.response) {
+        throw new Error('Cannot connect to server - please check if the backend is running');
+      }
       throw this.handleError(error);
     }
   }

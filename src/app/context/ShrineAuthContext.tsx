@@ -21,15 +21,23 @@ export const ShrineAuthProvider: React.FC<{ children: ReactNode }> = ({ children
   useEffect(() => {
     const initializeAuth = async () => {
       try {
+        // Only verify token if user appears to be authenticated
         if (AdminApi.isAuthenticated()) {
-          const isValid = await verifyToken();
-          if (isValid) {
+          const response = await AdminApi.verifyToken();
+          if (response.success) {
             setIsAuthenticated(true);
             setAdmin(AdminApi.getCurrentAdmin());
+          } else {
+            setIsAuthenticated(false);
+            setAdmin(null);
           }
+        } else {
+          // User is not authenticated, skip verification
+          setIsAuthenticated(false);
+          setAdmin(null);
         }
       } catch (error) {
-        console.error('Auth initialization error:', error);
+        // Silently handle auth errors on initialization
         setIsAuthenticated(false);
         setAdmin(null);
       } finally {
@@ -82,6 +90,7 @@ export const ShrineAuthProvider: React.FC<{ children: ReactNode }> = ({ children
       const response = await AdminApi.verifyToken();
       if (response.success) {
         setAdmin(response.data.admin);
+        setIsAuthenticated(true);
         return true;
       } else {
         setIsAuthenticated(false);
@@ -89,7 +98,7 @@ export const ShrineAuthProvider: React.FC<{ children: ReactNode }> = ({ children
         return false;
       }
     } catch (error) {
-      console.error('Token verification error:', error);
+      // Silently handle verification errors
       setIsAuthenticated(false);
       setAdmin(null);
       return false;

@@ -54,8 +54,11 @@ export const HomePage: React.FC = () => {
       try {
         setManagementLoading(true);
         const response = await ManagementApi.getAllActive();
-        if (response.success) {
+        if (response && response.success) {
           setManagementMembers(response.data || []);
+        } else {
+          console.warn('Management API returned unsuccessful response:', response);
+          setManagementMembers([]);
         }
       } catch (error) {
         console.error('Error loading management team:', error);
@@ -65,7 +68,12 @@ export const HomePage: React.FC = () => {
       }
     };
 
-    loadManagementTeam();
+    // Add a small delay to ensure backend is ready
+    const timer = setTimeout(() => {
+      loadManagementTeam();
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   // Title animation

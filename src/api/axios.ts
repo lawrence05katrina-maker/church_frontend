@@ -8,7 +8,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 10000, // 10 second timeout
+  timeout: 30000, // 30 second timeout for slower connections
 });
 
 // Add request interceptor for debugging
@@ -29,14 +29,22 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.error('API Response Error:', error.response?.data || error.message);
+    // Only log errors that are not 401 (unauthorized) for verify-token endpoint
+    const isVerifyTokenEndpoint = error.config?.url?.includes('/admin/verify-token');
+    const is401Error = error.response?.status === 401;
+    
+    if (!(isVerifyTokenEndpoint && is401Error)) {
+      console.error('API Response Error:', error.response?.data || error.message);
+    }
     
     // Handle specific error cases
     if (error.response?.status === 404) {
       console.error('API endpoint not found:', error.config?.url);
     } else if (error.response?.status >= 500) {
       console.error('Server error:', error.response?.data);
-    } else if (error.code === 'NETWORK_ERROR') {
+    } else if (error.code === 'ECONNABORTED') {
+      console.error('Request timeout - server took too long to respond');
+    } else if (!error.response) {
       console.error('Network error - check if backend is running');
     }
     

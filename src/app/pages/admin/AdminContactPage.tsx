@@ -66,9 +66,10 @@ export const AdminContactPage: React.FC = () => {
       }
     },
     social_media: {
-      facebook: 'https://www.facebook.com/Devasahayammountshrine',
-      youtube: 'https://www.youtube.com/@devasahayammountshrine5677?si=VMI5LnpVg0_qa_Ud',
-      instagram: 'https://www.instagram.com/devasahayammountshrine/?igsh=MXJ1d3N5aXlxcHVuMw%3D%3D'
+      website: 'https://www.devasahayammountshrine.com',
+      facebook: 'https://www.facebook.com/saintdevasahayam',
+      youtube: 'https://www.youtube.com/@SaintDevasahayamShrine',
+      instagram: 'https://www.instagram.com/st.devasahayamshrine/'
     },
     transportation_info: {
       by_air: {
@@ -114,9 +115,10 @@ export const AdminContactPage: React.FC = () => {
             special_occasions: { feast_day: '', sundays: '' }
           },
           social_media: response.data.social_media || {
-            facebook: 'https://www.facebook.com/Devasahayammountshrine', 
-            youtube: 'https://www.youtube.com/@devasahayammountshrine5677?si=VMI5LnpVg0_qa_Ud', 
-            instagram: 'https://www.instagram.com/devasahayammountshrine/?igsh=MXJ1d3N5aXlxcHVuMw%3D%3D'
+            website: 'https://www.devasahayammountshrine.com',
+            facebook: 'https://www.facebook.com/saintdevasahayam', 
+            youtube: 'https://www.youtube.com/@SaintDevasahayamShrine', 
+            instagram: 'https://www.instagram.com/st.devasahayamshrine/'
           },
           transportation_info: response.data.transportation_info || {
             by_air: { nearest_airport: '', distance: '', transport: '' },
@@ -409,11 +411,21 @@ export const AdminContactPage: React.FC = () => {
 
                 <div className="space-y-4">
                   <div>
+                    <Label>Website URL</Label>
+                    <Input
+                      value={formData.social_media.website}
+                      onChange={(e) => updateFormData('social_media.website', e.target.value)}
+                      placeholder="https://www.devasahayammountshrine.com"
+                      className="border-green-200 focus:border-green-400"
+                    />
+                  </div>
+
+                  <div>
                     <Label>Facebook URL</Label>
                     <Input
                       value={formData.social_media.facebook}
                       onChange={(e) => updateFormData('social_media.facebook', e.target.value)}
-                      placeholder="https://www.facebook.com/Devasahayammountshrine"
+                      placeholder="https://www.facebook.com/saintdevasahayam"
                       className="border-green-200 focus:border-green-400"
                     />
                   </div>
@@ -423,7 +435,7 @@ export const AdminContactPage: React.FC = () => {
                     <Input
                       value={formData.social_media.youtube}
                       onChange={(e) => updateFormData('social_media.youtube', e.target.value)}
-                      placeholder="https://www.youtube.com/@devasahayammountshrine5677?si=VMI5LnpVg0_qa_Ud"
+                      placeholder="https://www.youtube.com/@SaintDevasahayamShrine"
                       className="border-green-200 focus:border-green-400"
                     />
                   </div>
@@ -433,7 +445,7 @@ export const AdminContactPage: React.FC = () => {
                     <Input
                       value={formData.social_media.instagram}
                       onChange={(e) => updateFormData('social_media.instagram', e.target.value)}
-                      placeholder="https://www.instagram.com/devasahayammountshrine/?igsh=MXJ1d3N5aXlxcHVuMw%3D%3D"
+                      placeholder="https://www.instagram.com/st.devasahayamshrine/"
                       className="border-green-200 focus:border-green-400"
                     />
                   </div>

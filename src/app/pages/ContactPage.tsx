@@ -41,9 +41,10 @@ const DEFAULT_CONTACT_INFO: ContactInfo = {
     }
   },
   social_media: {
-    facebook: 'https://www.facebook.com/DVmount',
-    youtube: 'https://www.youtube.com/@devasahayammountshrine5677',
-    instagram: 'https://www.instagram.com/popular/devasahayam-mount/?utm_source=chatgpt.com'
+    website: 'https://www.devasahayammountshrine.com',
+    facebook: 'https://www.facebook.com/saintdevasahayam',
+    youtube: 'https://www.youtube.com/@SaintDevasahayamShrine',
+    instagram: 'https://www.instagram.com/st.devasahayamshrine/'
   },
   transportation_info: {
     by_air: {
@@ -294,7 +295,7 @@ export const ContactPage: React.FC = () => {
             <h3 className={getTamilHeadingClass("text-lg sm:text-xl font-semibold text-green-800 mb-3 sm:mb-4 text-center")}>{t('contact.connect.with.us')}</h3>
             <div className="flex flex-row justify-center items-center gap-6 sm:gap-8">
               <a
-                href={contactInfo.social_media?.facebook || 'https://www.facebook.com/DVmount'}
+                href={contactInfo.social_media?.facebook || 'https://www.facebook.com/saintdevasahayam'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center gap-1 sm:gap-2 p-1 sm:p-3 rounded-lg hover:bg-green-50 transition-colors group animate-float"
@@ -307,7 +308,7 @@ export const ContactPage: React.FC = () => {
                 <span className={getTamilClass("hidden sm:block text-sm text-gray-700")}>{t('contact.facebook')}</span>
               </a>
               <a
-                href={contactInfo.social_media?.youtube || 'https://www.youtube.com/@devasahayammountshrine5677'}
+                href={contactInfo.social_media?.youtube || 'https://www.youtube.com/@SaintDevasahayamShrine'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center gap-1 sm:gap-2 p-1 sm:p-3 rounded-lg hover:bg-green-50 transition-colors group animate-float"
@@ -321,7 +322,7 @@ export const ContactPage: React.FC = () => {
                 <span className={getTamilClass("hidden sm:block text-sm text-gray-700")}>{t('contact.youtube')}</span>
               </a>
               <a
-                href={contactInfo.social_media?.instagram || 'https://www.instagram.com/popular/devasahayam-mount/?utm_source=chatgpt.com'}
+                href={contactInfo.social_media?.instagram || 'https://www.instagram.com/st.devasahayamshrine/'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center gap-1 sm:gap-2 p-1 sm:p-3 rounded-lg hover:bg-green-50 transition-colors group animate-float"

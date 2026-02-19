@@ -323,7 +323,7 @@ export const LiveStreamPage: React.FC = () => {
 
   // Memoize YouTube URL
   const youtubeUrl = useMemo(() => {
-    return siteContent?.youtubeUrl || 'https://www.youtube.com/@devasahayammountshrine5677';
+    return siteContent?.youtubeUrl || 'https://www.youtube.com/@SaintDevasahayamShrine';
   }, [siteContent?.youtubeUrl]);
 
   return (
