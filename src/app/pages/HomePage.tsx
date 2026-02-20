@@ -100,16 +100,24 @@ export const HomePage: React.FC = () => {
   };
 
   // Helper function to get full image URL
-  const getImageUrl = (imageUrl: string | null | undefined): string | null => {
-    if (!imageUrl) return null;
-    if (imageUrl.startsWith('http')) return imageUrl;
-    if (imageUrl.startsWith('/uploads')) {
-      // Use environment variable for backend URL, fallback to localhost for development
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
-      return `${backendUrl}${imageUrl}`;
-    }
+ const getImageUrl = (imageUrl: string | null | undefined): string | null => {
+  if (!imageUrl) return null;
+
+  // Already full URL (Cloudinary, S3, etc.)
+  if (imageUrl.startsWith('http')) {
     return imageUrl;
-  };
+  }
+
+  // Backend uploads folder
+  if (imageUrl.startsWith('/uploads')) {
+    const backendUrl =
+      import.meta.env.VITE_BACKEND_URL || window.location.origin;
+
+    return `${backendUrl}${imageUrl}`;
+  }
+
+  return imageUrl;
+};
 
   return (
     <div className="min-h-screen">

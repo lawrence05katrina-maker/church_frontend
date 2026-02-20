@@ -37,7 +37,8 @@ const getImageUrl = (imageUrl: string | null | undefined): string => {
   if (imageUrl.startsWith('http')) return imageUrl;
   if (imageUrl.startsWith('/uploads')) {
     // Use environment variable for backend URL, fallback to localhost for development
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+    const backendUrl =
+  import.meta.env.VITE_BACKEND_URL || window.location.origin;
     return `${backendUrl}${imageUrl}`;
   }
   return imageUrl;

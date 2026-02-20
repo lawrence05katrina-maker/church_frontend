@@ -29,7 +29,7 @@ import {
   CheckCircle2,
   FileImage
 } from 'lucide-react';
-import GalleryApi from '../../../api/galleryApi';
+import GalleryApi, { GalleryItem } from '../../../api/galleryApi';
 import { toast } from 'sonner';
 
 // Helper function to get video thumbnail
@@ -51,7 +51,7 @@ const getVideoThumbnail = (videoUrl: string, title: string): string => {
     console.log('Extracted video ID:', videoId);
     
     if (videoId) {
-      const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+      const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
       console.log('Generated thumbnail URL:', thumbnailUrl);
       return thumbnailUrl;
     }
@@ -96,27 +96,12 @@ const getImageUrl = (imageUrl: string | null | undefined): string => {
   if (imageUrl.startsWith('http')) return imageUrl;
   if (imageUrl.startsWith('/uploads')) {
     // Use environment variable for backend URL, fallback to localhost for development
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+    const backendUrl =
+  import.meta.env.VITE_BACKEND_URL || window.location.origin;
     return `${backendUrl}${imageUrl}`;
   }
   return imageUrl;
 };
-
-interface GalleryItem {
-  id: number;
-  title: string;
-  description?: string;
-  image_url: string;
-  image_name: string;
-  category: string;
-  is_featured: boolean;
-  is_active: boolean;
-  display_order: number;
-  created_at: string;
-  file_type?: 'image' | 'video';
-  image_type?: string;
-  image_size?: number;
-}
 
 export const AdminGalleryPage: React.FC = () => {
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
@@ -221,6 +206,13 @@ export const AdminGalleryPage: React.FC = () => {
       toast.error('Please select a valid image or video file (JPEG, PNG, GIF, WebP, MP4, WebM, OGG)');
       return;
     }
+    // Add after file type validation
+const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+
+if (file.size > MAX_SIZE) {
+  toast.error('File size must be less than 10MB');
+  return;
+}
     
     setFormData(prev => ({ ...prev, file }));
   };
@@ -273,7 +265,7 @@ export const AdminGalleryPage: React.FC = () => {
           is_featured: formData.is_featured,
           is_active: formData.is_active,
           display_order: formData.display_order,
-          file_type: 'video'
+          file_type: 'video' as 'video'
         };
 
         const createResponse = await GalleryApi.createGalleryItem(itemData);
@@ -297,21 +289,26 @@ export const AdminGalleryPage: React.FC = () => {
         
         if (isVideo) {
           // For video files, create item directly (you might want to implement video upload to a service)
+          const uploadResponse = await GalleryApi.uploadImage(formData.file);
+          
+  if (!uploadResponse.success) {
+    throw new Error(uploadResponse.message || 'Video upload failed');
+  }
           const itemData = {
-            title: formData.title,
-            description: formData.description,
-            image_url: URL.createObjectURL(formData.file), // Temporary - in production, upload to video service
-            image_name: formData.file.name,
-            image_type: formData.file.type,
-            image_size: formData.file.size,
-            category: formData.category,
-            is_featured: formData.is_featured,
-            is_active: formData.is_active,
-            display_order: formData.display_order,
-            file_type: 'video'
-          };
+    title: formData.title,
+    description: formData.description,
+    image_url: uploadResponse.data.image_url,
+    image_name: uploadResponse.data.image_name,
+    image_type: formData.file.type,
+    image_size: formData.file.size,
+    category: formData.category,
+    is_featured: formData.is_featured,
+    is_active: formData.is_active,
+    display_order: formData.display_order,
+    file_type: 'video' as 'video'
+  };
+  const createResponse = await GalleryApi.createGalleryItem(itemData);
 
-          const createResponse = await GalleryApi.createGalleryItem(itemData);
           
           if (createResponse.success) {
             toast.success('Video uploaded successfully!');
@@ -341,7 +338,7 @@ export const AdminGalleryPage: React.FC = () => {
             is_featured: formData.is_featured,
             is_active: formData.is_active,
             display_order: formData.display_order,
-            file_type: 'image'
+            file_type: 'image' as 'image'
           };
 
           const createResponse = await GalleryApi.createGalleryItem(itemData);
@@ -359,7 +356,10 @@ export const AdminGalleryPage: React.FC = () => {
       }
     } catch (error) {
       console.error('Upload error:', error);
-      const errorMessage = error.message || error.response?.data?.message || 'Failed to create gallery item';
+const errorMessage =
+  error instanceof Error
+    ? error.message
+    : 'Failed to create gallery item';
       toast.error(errorMessage);
     } finally {
       setUploading(false);

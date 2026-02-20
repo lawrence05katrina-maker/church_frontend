@@ -6,7 +6,7 @@ interface CacheItem {
   timestamp: number;
 }
 
-interface GalleryItem {
+export interface GalleryItem {
   id: number;
   title: string;
   description?: string;
@@ -14,9 +14,12 @@ interface GalleryItem {
   image_name: string;
   category: string;
   is_featured: boolean;
-  file_type: string;
+  is_active: boolean;
+  display_order: number;
+  file_type?: 'image' | 'video';
+  image_type?: string;
+  image_size?: number;
   created_at: string;
-  is_active?: boolean;
 }
 
 interface ApiResponse<T = any> {

@@ -7,7 +7,7 @@ import { Alert, AlertDescription } from '../components/ui/alert';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { useLanguage } from '../context/LanguageContext';
-import GalleryApi from '../../api/galleryApi';
+import GalleryApi, { GalleryItem } from '../../api/galleryApi';
 import { 
   Calendar,
   Eye,
@@ -69,28 +69,31 @@ const getVideoThumbnail = (videoUrl: string): string => {
 
 // Helper function to get full image URL
 const getImageUrl = (imageUrl: string | null | undefined): string => {
-  if (!imageUrl) return 'https://images.unsplash.com/photo-1758517936201-cb4b8fd39e71?w=400&h=300&fit=crop';
-  if (imageUrl.startsWith('http')) return imageUrl;
+  if (!imageUrl) {
+    return 'https://images.unsplash.com/photo-1758517936201-cb4b8fd39e71?w=400&h=300&fit=crop';
+  }
+
+  if (imageUrl.startsWith('http')) {
+    return imageUrl;
+  }
+
   if (imageUrl.startsWith('/uploads')) {
-    // Use environment variable for backend URL, fallback to localhost for development
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+    if (!backendUrl) {
+      console.error("VITE_BACKEND_URL is not defined");
+      return imageUrl; // fallback safely
+    }
+
     return `${backendUrl}${imageUrl}`;
   }
+
   return imageUrl;
 };
 
 // Types
-interface GalleryItem {
-  id: number;
-  title: string;
-  description?: string;
-  image_url: string;
-  image_name: string;
-  category: string;
-  is_featured: boolean;
-  file_type: string;
-  created_at: string;
-  type?: 'photo' | 'video'; 
+interface PhotoItem extends GalleryItem {
+  type: 'photo';
 }
 
 interface VideoItem {
@@ -108,12 +111,12 @@ interface VideoItem {
 export const GalleryPage: React.FC = () => {
   // State management
   const { language, t } = useLanguage();
-  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [galleryItems, setGalleryItems] = useState<PhotoItem[]>([]);
   const [videoItems, setVideoItems] = useState<VideoItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'all' | 'photos' | 'videos'>('all');
-  const [selectedItem, setSelectedItem] = useState<GalleryItem | VideoItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<PhotoItem | VideoItem | null>(null);
   const [retryCount, setRetryCount] = useState(0);
 
   // Tamil font size classes
@@ -142,22 +145,26 @@ export const GalleryPage: React.FC = () => {
         const items = response.data || [];
         
         // Separate photos and videos
-        const photos = items.filter((item: GalleryItem) => item.file_type !== 'video').map((item: GalleryItem) => ({
-          ...item,
-          type: 'photo' as const
-        }));
+        const photos: PhotoItem[] = items
+          .filter((item) => item.file_type !== 'video')
+          .map((item) => ({
+            ...item,
+            type: 'photo' as const
+          }));
         
-        const videos = items.filter((item: any) => item.file_type === 'video').map((item: any) => ({
-          id: item.id,
-          title: item.title,
-          description: item.description,
-          video_url: convertToEmbedUrl(item.image_url), // Convert to embed URL
-          thumbnail_url: getVideoThumbnail(item.image_url), // Get YouTube thumbnail
-          category: item.category,
-          created_at: item.created_at,
-          duration: '0:00', // Default duration, can be enhanced later
-          views: '0' // Default views, can be enhanced later
-        }));
+        const videos: VideoItem[] = items
+          .filter((item) => item.file_type === 'video')
+          .map((item) => ({
+            id: item.id,
+            title: item.title,
+            description: item.description,
+            video_url: convertToEmbedUrl(item.image_url), // Convert to embed URL
+            thumbnail_url: getVideoThumbnail(item.image_url), // Get YouTube thumbnail
+            category: item.category,
+            created_at: item.created_at,
+            duration: '0:00', // Default duration, can be enhanced later
+            views: '0' // Default views, can be enhanced later
+          }));
         
         setGalleryItems(photos);
         setVideoItems(videos);
@@ -214,11 +221,11 @@ export const GalleryPage: React.FC = () => {
   };
 
   // Handle item download
-  const handleDownload = async (item: GalleryItem | VideoItem) => {
+  const handleDownload = async (item: PhotoItem | VideoItem) => {
     try {
       if ('image_url' in item) {
         // Handle photo download
-        const response = await fetch(item.image_url);
+        const response = await fetch(getImageUrl(item.image_url));
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -235,7 +242,7 @@ export const GalleryPage: React.FC = () => {
   };
 
   // Handle share
-  const handleShare = async (item: GalleryItem | VideoItem) => {
+  const handleShare = async (item: PhotoItem | VideoItem) => {
     if (navigator.share) {
       try {
         await navigator.share({
@@ -253,7 +260,7 @@ export const GalleryPage: React.FC = () => {
   };
 
   // Check if item is a video
-  const isVideo = (item: GalleryItem | VideoItem): item is VideoItem => {
+  const isVideo = (item: PhotoItem | VideoItem): item is VideoItem => {
     return 'video_url' in item;
   };
 
@@ -441,7 +448,7 @@ export const GalleryPage: React.FC = () => {
                       <div className="relative group">
                         <div className="relative overflow-hidden">
                           <ImageWithFallback
-                            src={getImageUrl((item as GalleryItem).image_url)}
+                            src={getImageUrl((item as PhotoItem).image_url)}
                             alt={item.title}
                             className={`w-full object-cover group-hover:scale-105 transition-transform duration-300 ${
                               index % 4 === 0 ? 'h-80' : index % 4 === 1 ? 'h-64' : index % 4 === 2 ? 'h-72' : 'h-60'
@@ -590,7 +597,7 @@ export const GalleryPage: React.FC = () => {
                       /* Photo Display */
                       <div className="rounded-lg overflow-hidden shadow-xl bg-gray-50">
                         <ImageWithFallback
-                          src={getImageUrl((selectedItem as GalleryItem).image_url)}
+                          src={getImageUrl((selectedItem as PhotoItem).image_url)}
                           alt={selectedItem.title}
                           className="w-full max-h-[70vh] object-contain"
                         />
